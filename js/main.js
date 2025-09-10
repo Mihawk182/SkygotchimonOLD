@@ -30,19 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adiciona evento de clique a cada ovo
     ui.eggContainers.forEach(egg => {
-        // Impede cliques em ovos bloqueados
         if (egg.classList.contains('locked')) {
             return;
         }
-
         egg.addEventListener('click', () => {
-            // Se o ovo já estiver selecionado, deseleciona
             if (egg.classList.contains('selected')) {
                 egg.classList.remove('selected');
                 selectedEggElement = null;
                 toggleConfirmButton(false);
             } else {
-                // Seleciona o ovo e deseleciona os outros
                 deselectEggs(egg);
                 egg.classList.add('selected');
                 selectedEggElement = egg.dataset.element;
@@ -54,41 +50,73 @@ document.addEventListener('DOMContentLoaded', () => {
     // Adiciona evento de clique ao botão de confirmação
     ui.confirmEggBtn.addEventListener('click', () => {
         if (selectedEggElement) {
-            // Lógica para mudar para a tela da incubadora
             console.log(`Ovo de ${selectedEggElement} selecionado!`);
             showScreen('tela-incubadora');
-            
-            // Define a imagem do ovo na tela da incubadora
             const eggImagePath = `assets/images/eggs/${selectedEggElement}_egg.png`;
             ui.eggImageIncubator.src = eggImagePath;
-
             startIncubation();
         }
     });
+
+    // Função para atualizar os filtros visuais do ovo
+    function updateEggVisuals() {
+        const temp = parseInt(ui.temperatureSlider.value);
+        const humidity = parseInt(ui.humiditySlider.value);
+        const light = parseInt(ui.lightSlider.value);
+
+        const filters = [];
+
+        // Lógica para o brilho (Luminosidade)
+        filters.push(`brightness(${0.2 + (light / 100)})`);
+
+        // Lógica para a sombra da Temperatura
+        const tempMid = 50;
+        if (temp > tempMid) { // Quente
+            const opacity = Math.min((temp - tempMid) / (100 - tempMid), 1);
+            const tempColor = `rgba(255, 0, 0, ${opacity})`;
+            filters.push(`drop-shadow(0 0 15px ${tempColor})`);
+        } else if (temp < tempMid) { // Frio
+            const opacity = Math.min((tempMid - temp) / tempMid, 1);
+            const tempColor = `rgba(0, 255, 255, ${opacity})`;
+            filters.push(`drop-shadow(0 0 15px ${tempColor})`);
+        }
+
+        // Lógica para a sombra da Umidade
+        const humidityMid = 50;
+        if (humidity > humidityMid) { // Úmido
+            const opacity = Math.min((humidity - humidityMid) / (100 - humidityMid), 1);
+            const humidityColor = `rgba(37, 99, 235, ${opacity})`;
+            filters.push(`drop-shadow(0 0 12px ${humidityColor})`);
+        } else if (humidity < humidityMid) { // Seco
+            const opacity = Math.min((humidityMid - humidity) / humidityMid, 1);
+            const humidityColor = `rgba(150, 75, 0, ${opacity})`;
+            filters.push(`drop-shadow(0 0 12px ${humidityColor})`);
+        }
+
+        ui.eggImageIncubator.style.filter = filters.join(' ');
+    }
 
     // Função para verificar se as condições de incubação são ideais
     function checkIncubationConditions() {
         const temp = parseInt(ui.temperatureSlider.value);
         const humidity = parseInt(ui.humiditySlider.value);
         const light = parseInt(ui.lightSlider.value);
-
         const conditions = idealConditions[selectedEggElement];
-
         const isTempIdeal = temp >= conditions.temp.min && temp <= conditions.temp.max;
         const isHumidityIdeal = humidity >= conditions.humidity.min && humidity <= conditions.humidity.max;
         const isLightIdeal = light >= conditions.light.min && light <= conditions.light.max;
-
-        if (isTempIdeal && isHumidityIdeal && isLightIdeal) {
-            return true;
-        } else {
-            return false;
-        }
+        return isTempIdeal && isHumidityIdeal && isLightIdeal;
     }
 
     // Função para iniciar a incubação
     function startIncubation() {
         if (isIncubating) return;
         isIncubating = true;
+
+        // Zera o progresso e atualiza os visuais iniciais
+        incubationProgress = 0;
+        ui.progressBarIncubator.firstElementChild.style.width = '0%';
+        updateEggVisuals();
 
         incubationInterval = setInterval(() => {
             if (checkIncubationConditions()) {
@@ -103,37 +131,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(incubationInterval);
                 isIncubating = false;
                 ui.eggFeedback.textContent = "Seu ovo chocou!";
-                // Transição para a próxima tela
                 setTimeout(() => {
-                    // Substitua 'proxima-tela' pelo ID da próxima tela, ex: 'tela-perfil-criatura'
                     showScreen('tela-perfil-criatura'); 
                 }, 2000);
             }
-        }, 1200); // 2 minutos / 100% = 1.2 segundos por %
+        }, 1200);
     }
 
     // Adiciona evento de mudança aos sliders para feedback instantâneo
-    ui.temperatureSlider.addEventListener('input', () => {
-        if (!checkIncubationConditions()) {
-            ui.eggFeedback.textContent = "Ajuste os parâmetros para continuar a incubação.";
-        }
-    });
-
-    ui.humiditySlider.addEventListener('input', () => {
-        if (!checkIncubationConditions()) {
-            ui.eggFeedback.textContent = "Ajuste os parâmetros para continuar a incubação.";
-        }
-    });
-
-    ui.lightSlider.addEventListener('input', () => {
-        if (!checkIncubationConditions()) {
-            ui.eggFeedback.textContent = "Ajuste os parâmetros para continuar a incubação.";
-        }
+    [ui.temperatureSlider, ui.humiditySlider, ui.lightSlider].forEach(slider => {
+        slider.addEventListener('input', () => {
+            updateEggVisuals();
+            if (!checkIncubationConditions()) {
+                ui.eggFeedback.textContent = "Ajuste os parâmetros para continuar a incubação.";
+            }
+        });
     });
 
     // Função de inicialização
     function init() {
-        // Mostra a tela inicial e oculta as outras
         showScreen('tela-ovo');
     }
 
