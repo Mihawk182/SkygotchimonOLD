@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skygotchimon</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+
+    <!-- Tela 1: Escolha do Ovo -->
+    <section id="tela-ovo" class="screen active">
+        <div class="flex flex-col items-center justify-center min-h-screen p-4">
+            <h1 class="text-4xl font-bold mb-8 text-center">Escolha seu Ovo</h1>
+            <div class="flex flex-col gap-8 items-center">
+                <!-- Primeira linha: 4 ovos -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="fire">
+                        <img src="assets/images/eggs/fire_egg.png" alt="Ovo de Fogo" class="egg-image">
+                        <p class="egg-label">Fogo</p>
+                    </div>
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="water">
+                        <img src="assets/images/eggs/water_egg.png" alt="Ovo de Água" class="egg-image">
+                        <p class="egg-label">Água</p>
+                    </div>
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="earth">
+                        <img src="assets/images/eggs/earth_egg.png" alt="Ovo de Terra" class="egg-image">
+                        <p class="egg-label">Terra</p>
+                    </div>
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="air">
+                        <img src="assets/images/eggs/air_egg.png" alt="Ovo de Ar" class="egg-image">
+                        <p class="egg-label">Ar</p>
+                    </div>
+                </div>
+                <!-- Segunda linha: 4 ovos -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="life">
+                        <img src="assets/images/eggs/life_egg.png" alt="Ovo de Vida" class="egg-image">
+                        <p class="egg-label">Vida</p>
+                    </div>
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="undead">
+                        <img src="assets/images/eggs/undead_egg.png" alt="Ovo de Morto-Vivo" class="egg-image">
+                        <p class="egg-label">Morto-Vivo</p>
+                    </div>
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="magic">
+                        <img src="assets/images/eggs/magic_egg.png" alt="Ovo de Magia" class="egg-image">
+                        <p class="egg-label">Magia</p>
+                    </div>
+                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="tech">
+                        <img src="assets/images/eggs/tecno_egg.png" alt="Ovo de Tecno" class="egg-image">
+                        <p class="egg-label">Tecno</p>
+                    </div>
+                </div>
+                <!-- Terceira linha: 2 ovos (bloqueados) -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="light">
+                        <img src="assets/images/eggs/light_egg.png" alt="Ovo de Luz (Bloqueado)" class="egg-image">
+                        <p class="egg-label">Luz</p>
+                    </div>
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="dark">
+                        <img src="assets/images/eggs/dark_egg.png" alt="Ovo de Trevas (Bloqueado)" class="egg-image">
+                        <p class="egg-label">Trevas</p>
+                    </div>
+                </div>
+            </div>
+            <button id="confirm-egg-btn" class="mt-8 px-6 py-3 bg-indigo-600 rounded-full text-lg font-bold shadow-lg opacity-0 transition-opacity duration-300" disabled>Confirmar</button>
+        </div>
+    </section>
+
+    <!-- Tela 2: Incubadora -->
+    <section id="tela-incubadora" class="screen hidden">
+        <div class="flex flex-col items-center justify-center min-h-screen p-4">
+            <h1 class="text-4xl font-bold mb-8 text-center">Incubando o Ovo</h1>
+            <div id="incubator-container" class="relative w-full max-w-xl">
+                <img id="egg-image-incubator" src="" alt="Ovo na Incubadora" class="w-2/3 mx-auto">
+                <p id="egg-feedback" class="text-center text-lg mt-4"></p>
+            </div>
+            <div class="w-full max-w-md mt-8">
+                <div class="mb-4">
+                    <label for="temperature-slider" class="block text-lg font-semibold mb-2">Temperatura</label>
+                    <input type="range" id="temperature-slider" min="0" max="100" value="50" class="w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="humidity-slider" class="block text-lg font-semibold mb-2">Umidade</label>
+                    <input type="range" id="humidity-slider" min="0" max="100" value="50" class="w-full">
+                </div>
+                <div class="mb-4">
+                    <label for="light-slider" class="block text-lg font-semibold mb-2">Luminosidade</label>
+                    <input type="range" id="light-slider" min="0" max="100" value="50" class="w-full">
+                </div>
+            </div>
+            <div id="incubator-progress-bar" class="w-full max-w-md h-4 bg-gray-700 rounded-full mt-8">
+                <div class="h-full bg-green-500 rounded-full" style="width: 0%;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- As telas a seguir estão ocultas e serão ativadas via JavaScript -->
+    <section id="tela-perfil-criatura" class="screen hidden"></section>
+    <section id="tela-bebe" class="screen hidden"></section>
+    <section id="tela-crianca" class="screen hidden"></section>
+    <section id="tela-adulto" class="screen hidden"></section>
+    <section id="tela-mestre" class="screen hidden"></section>
+    <section id="tela-supremo" class="screen hidden"></section>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/ui.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
+</body>
+</html>

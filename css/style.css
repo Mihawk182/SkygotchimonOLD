@@ -1,0 +1,95 @@
+/*
+ * Skygotchimon - Estilos CSS
+ *
+ * Este arquivo define a aparência visual de todas as telas do jogo,
+ * usando classes utilitárias e estilos personalizados
+ * para os elementos do jogo.
+ */
+
+/* Configurações básicas do corpo */
+body {
+    background-color: #1a202c; /* Cor de fundo escura, padrão do Tailwind gray-900 */
+}
+
+/* Estilos para o corpo e fonte */
+.font-inter {
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estilos para as telas */
+.screen {
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.screen.active {
+    display: block;
+    opacity: 1;
+}
+
+.screen.hidden {
+    opacity: 0;
+}
+
+/* Estilos para os ovos na tela inicial */
+.egg-container {
+    position: relative;
+    cursor: pointer;
+    border-radius: 1.5rem; /* cantos arredondados */
+    background: #2d3748; /* Cor de fundo para os ovos */
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra para profundidade */
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.egg-container:hover {
+    transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.egg-container.selected {
+    border: 3px solid #6366f1; /* Borda brilhante quando selecionado */
+    transform: scale(1.05); /* Leve aumento de tamanho */
+}
+
+.egg-container.locked {
+    pointer-events: none; /* Desabilita o clique */
+    opacity: 0.5; /* Deixa o ovo semitransparente */
+    filter: grayscale(100%); /* Efeito de cinza para indicar que está bloqueado */
+    cursor: not-allowed;
+}
+
+.egg-image {
+    max-width: 80%;
+    height: auto;
+    transition: transform 0.2s;
+}
+
+.egg-container.selected .egg-image {
+    transform: scale(1.1);
+}
+
+.egg-label {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Estilos para o botão */
+#confirm-egg-btn {
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.2s;
+}
+
+#confirm-egg-btn:disabled {
+    cursor: not-allowed;
+    transform: none;
+}
