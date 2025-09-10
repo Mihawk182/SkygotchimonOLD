@@ -1,0 +1,47 @@
+Animações para o Estágio Mestre
+
+1. Animações de Interação (Ações do Jogador):
+
+Comendo: A criatura com a boca aberta, mastigando e engolindo.
+
+Tomando Banho: A criatura sendo esfregada, com bolhas de sabão, e parecendo limpa.
+
+Sendo Acariciada: A criatura emitindo corações ou com uma expressão feliz.
+
+Sendo Curada: A criatura tomando um remédio, com uma animação que a deixa mais animada.
+
+Dormindo: A criatura de olhos fechados, respirando lentamente.
+
+
+
+2. Animações de Estado (Condição da Criatura):
+
+Parado/Normal: A criatura parada, com uma animação sutil (por exemplo, piscando os olhos ou balançando um pouco).
+
+Feliz: A criatura sorrindo ou pulando de alegria.
+
+Triste: A criatura com uma expressão de choro ou com a cabeça baixa.
+
+Suja: A criatura com sujeira visível no corpo e uma expressão de desconforto.
+
+Doente: A criatura com uma cor pálida, com febre ou com símbolos de doença (X ou espirros) sobre a cabeça.
+
+Com Fome: A criatura com a barriga roncando ou implorando por comida.
+
+
+
+3. Animações de Poder (Foco em Habilidades Supremas):
+
+Super Primordial (Domínio Absoluto): A criatura executa uma sequência de movimentos combinados de todas as outras formas, sem esforço, demonstrando sua total versatilidade.
+
+Psíquica (Clarividência): A criatura flutua e abre a mente do jogador para um "universo" de símbolos e pensamentos, demonstrando sua total inteligência.
+
+Lutadora (Força Indomável): A criatura libera um golpe que causa um pequeno terremoto na tela, acompanhado de uma onda de choque que reflete sua força.
+
+Mágica (Magia Pura): A criatura conjura um feitiço supremo, com efeitos visuais que distorcem o ambiente ao redor e emitem um brilho intenso.
+
+Sagrada (Ascensão Espiritual): A criatura se torna um ser de pura luz, com uma animação que a faz brilhar e emitir raios de energia que purificam a tela.
+
+Científica (Tecnologia Superior): A criatura cria um portal instantâneo para outra dimensão e salta para ela, mostrando sua total maestria sobre a tecnologia.
+
+Profana (Corrupção Extrema): A criatura se torna uma massa de sombras e corrompe o ambiente, transformando a tela em um campo de energia negra.
