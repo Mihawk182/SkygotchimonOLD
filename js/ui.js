@@ -56,6 +56,13 @@ const ui = {
     debugHappinessSlider: document.getElementById('debug-happiness-slider'),
     debugCleanlinessSlider: document.getElementById('debug-cleanliness-slider'),
     debugHealthSlider: document.getElementById('debug-health-slider'),
+
+    // Elementos do Pop-up de Informações do Ovo
+    eggInfoPopup: document.getElementById('egg-info-popup'),
+    popupEggImage: document.getElementById('popup-egg-image'),
+    popupEggTitle: document.getElementById('popup-egg-title'),
+    popupEggDescription: document.getElementById('popup-egg-description'),
+    popupContinueBtn: document.getElementById('popup-continue-btn'),
 };
 
 /**
@@ -115,3 +122,4 @@ function updateProgressBarColor(isCorrect) {
 }
 
 export { ui, showScreen, toggleConfirmButton, deselectEggs, updateProgressBarColor };
+

@@ -22,34 +22,34 @@
                         <img src="assets/images/eggs/fire_egg.png" alt="Ovo de Fogo" class="egg-image">
                         <p class="egg-label">Fogo</p>
                     </div>
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="water">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="water">
                         <img src="assets/images/eggs/water_egg.png" alt="Ovo de Água" class="egg-image">
                         <p class="egg-label">Água</p>
                     </div>
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="earth">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="earth">
                         <img src="assets/images/eggs/earth_egg.png" alt="Ovo de Terra" class="egg-image">
                         <p class="egg-label">Terra</p>
                     </div>
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="air">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="air">
                         <img src="assets/images/eggs/air_egg.png" alt="Ovo de Ar" class="egg-image">
                         <p class="egg-label">Ar</p>
                     </div>
                 </div>
                 <!-- Segunda linha: 4 ovos -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="life">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="life">
                         <img src="assets/images/eggs/life_egg.png" alt="Ovo de Vida" class="egg-image">
                         <p class="egg-label">Vida</p>
                     </div>
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="undead">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="undead">
                         <img src="assets/images/eggs/undead_egg.png" alt="Ovo de Morto-Vivo" class="egg-image">
                         <p class="egg-label">Morto-Vivo</p>
                     </div>
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="magic">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="magic">
                         <img src="assets/images/eggs/magic_egg.png" alt="Ovo de Magia" class="egg-image">
                         <p class="egg-label">Magia</p>
                     </div>
-                    <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="tech">
+                    <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="tech">
                         <img src="assets/images/eggs/tecno_egg.png" alt="Ovo de Tecno" class="egg-image">
                         <p class="egg-label">Tecno</p>
                     </div>
@@ -197,6 +197,31 @@
     <section id="tela-mestre" class="screen hidden"></section>
     <section id="tela-supremo" class="screen hidden"></section>
     
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/ui.js" type="module"></script>
+    <script src="js/main.js" type="module"></script>
+    <!-- Pop-up de Confirmação do Ovo -->
+    <div id="egg-info-popup" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 flex flex-col items-center">
+            <!-- Imagem do Ovo -->
+            <div class="w-full flex justify-center mb-4">
+                <img id="popup-egg-image" src="" alt="Ovo Selecionado" class="w-48 h-48">
+            </div>
+    
+            <!-- Conteúdo de Texto -->
+            <div class="w-full text-justify">
+                <h2 id="popup-egg-title" class="text-3xl font-bold mb-4 text-center"></h2>
+                <div id="popup-egg-description" class="text-base space-y-2">
+                </div>
+            </div>
+    
+            <!-- Botão de Continuar -->
+            <div class="w-full text-center mt-6">
+                <button id="popup-continue-btn" class="px-6 py-2 bg-indigo-600 rounded-md font-bold">Continuar</button>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/ui.js" type="module"></script>
     <script src="js/main.js" type="module"></script>

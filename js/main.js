@@ -32,6 +32,18 @@ document.addEventListener('DOMContentLoaded', () => {
         dark: 'trevas'
     };
 
+    const eggInfo = {
+        fire: {
+            title: "Criaturas de Fogo",
+            description: `
+                <p><strong>Reino de Origem:</strong> As criaturas de Fogo vêm das Profundezas Vulcânicas, uma região inóspita de rios de lava e montanhas de cinzas. É um lugar onde a energia da terra se manifesta em seu estado mais puro e caótico.</p>
+                <p><strong>Tipos de Ataque:</strong> Eles controlam o fogo em todas as suas formas. Seus ataques são rápidos e agressivos, como jatos de chamas, bolas de fogo e ondas de calor. Em estágios mais avançados, eles podem até mesmo invocar pequenas erupções vulcânicas.</p>
+                <p><strong>Comportamento:</strong> Agressivos e cheios de energia, mas também podem ser leais e protetores. Eles têm um temperamento quente e reagem rapidamente a ameaças, mas quando bem cuidados, são a companhia mais calorosa que se pode ter.</p>
+            `
+        },
+        // Add other elements here later
+    };
+
     // --- Estado Centralizado do Jogo ---
     const gameState = {
         game: {
@@ -99,12 +111,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Adiciona evento de clique ao botão de confirmação
     ui.confirmEggBtn.addEventListener('click', () => {
         if (gameState.incubation.selectedEggElement) {
-            console.log(`Ovo de ${gameState.incubation.selectedEggElement} selecionado!`);
-            const eggImagePath = `assets/images/eggs/${gameState.incubation.selectedEggElement}_egg.png`;
-            ui.eggImageIncubator.src = eggImagePath;
-            startIncubation();
+            showEggInfoPopup(gameState.incubation.selectedEggElement);
         }
     });
+
+    // Adiciona evento de clique ao botão de continuar do pop-up
+    ui.popupContinueBtn.addEventListener('click', () => {
+        ui.eggInfoPopup.classList.add('hidden');
+        startIncubation();
+    });
+
+    function showEggInfoPopup(element) {
+        const info = eggInfo[element];
+        if (!info) {
+            // If no info, just proceed
+            startIncubation();
+            return;
+        }
+    
+        ui.popupEggImage.src = `assets/images/eggs/${element}_egg.png`;
+        ui.popupEggTitle.textContent = info.title;
+        ui.popupEggDescription.innerHTML = info.description;
+    
+        ui.eggInfoPopup.classList.remove('hidden');
+    }
 
     // Função para atualizar os filtros visuais do ovo
     function updateEggVisuals() {
@@ -159,6 +189,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para iniciar a incubação
     function startIncubation() {
         if (gameState.incubation.isIncubating) return;
+
+        console.log(`Ovo de ${gameState.incubation.selectedEggElement} selecionado!`);
+        const eggImagePath = `assets/images/eggs/${gameState.incubation.selectedEggElement}_egg.png`;
+        ui.eggImageIncubator.src = eggImagePath;
+
         gameState.incubation.isIncubating = true;
         showScreen('tela-incubadora');
 
