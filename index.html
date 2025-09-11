@@ -99,8 +99,99 @@
     </section>
 
     <!-- As telas a seguir estão ocultas e serão ativadas via JavaScript -->
-    <section id="tela-perfil-criatura" class="screen hidden"></section>
-    <section id="tela-bebe" class="screen hidden"></section>
+    <section id="tela-bebe" class="screen hidden">
+        <div class="relative flex flex-col items-center justify-between min-h-screen p-4">
+            <!-- Cabeçalho com Nome e Status -->
+            <div class="w-full max-w-4xl mx-auto status-panel">
+                <h2 id="creature-name" class="text-3xl font-bold text-center mb-4">Nome da Criatura</h2>
+                <!-- Barra de Crescimento -->
+                <div class="status-bar mb-6" id="growth-bar-container">
+                    <span class="bar-label text-center">Crescimento</span>
+                    <div class="bar-background h-5">
+                        <div id="growth-bar" class="bar-fill bg-purple-500"></div>
+                    </div>
+                </div>
+                <div id="status-bars-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Barra de Fome -->
+                    <div class="status-bar" id="hunger-bar-container">
+                        <span class="bar-label">Fome</span>
+                        <div class="bar-background">
+                            <div id="hunger-bar" class="bar-fill bg-yellow-500"></div>
+                        </div>
+                    </div>
+                    <!-- Barra de Felicidade -->
+                    <div class="status-bar" id="happiness-bar-container">
+                        <span class="bar-label">Felicidade</span>
+                        <div class="bar-background">
+                            <div id="happiness-bar" class="bar-fill bg-pink-500"></div>
+                        </div>
+                    </div>
+                    <!-- Barra de Limpeza -->
+                    <div class="status-bar" id="cleanliness-bar-container">
+                        <span class="bar-label">Limpeza</span>
+                        <div class="bar-background">
+                            <div id="cleanliness-bar" class="bar-fill bg-blue-400"></div>
+                        </div>
+                    </div>
+                    <!-- Barra de Saúde -->
+                    <div class="status-bar" id="health-bar-container">
+                        <span class="bar-label">Saúde</span>
+                        <div class="bar-background">
+                            <div id="health-bar" class="bar-fill bg-green-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Exibição da Criatura -->
+            <div id="creature-display" class="flex-grow flex items-center justify-center w-full">
+                <!-- A imagem da criatura aparecerá aqui -->
+                <img id="creature-image" src="" alt="Sua criatura" class="max-w-xs max-h-64">
+            </div>
+
+            <!-- Botões de Ação -->
+            <div id="action-buttons-container" class="grid grid-cols-4 gap-4 w-full max-w-md mx-auto">
+                <button id="feed-btn" class="action-btn bg-green-600 hover:bg-green-700" title="Alimentar">
+                    <img src="assets/images/ui/icons_buttons/alimentar.png" alt="Alimentar">
+                </button>
+                <button id="play-btn" class="action-btn bg-purple-600 hover:bg-purple-700" title="Brincar">
+                    <img src="assets/images/ui/icons_buttons/brincar.png" alt="Brincar">
+                </button>
+                <button id="clean-btn" class="action-btn bg-cyan-600 hover:bg-cyan-700" title="Limpar">
+                    <img src="assets/images/ui/icons_buttons/limpar.png" alt="Limpar">
+                </button>
+                <button id="sleep-btn" class="action-btn bg-indigo-600 hover:bg-indigo-700" title="Dormir">
+                    <img src="assets/images/ui/icons_buttons/dormir.png" alt="Dormir">
+                </button>
+            </div>
+
+            <!-- Menu de Debug -->
+            <button id="debug-toggle-btn" class="fixed bottom-4 right-4 w-12 h-12 bg-gray-700 text-white rounded-full z-50 flex items-center justify-center shadow-lg font-bold">D</button>
+            <div id="debug-panel" class="hidden fixed bottom-20 right-4 bg-gray-800 p-4 rounded-lg shadow-xl z-50 w-64">
+                <h3 class="text-lg font-bold mb-2">Debug Menu</h3>
+                <!-- Fome -->
+                <div>
+                    <label for="debug-hunger-slider" class="text-sm">Fome</label>
+                    <input type="range" id="debug-hunger-slider" min="0" max="100" class="w-full">
+                </div>
+                <!-- Felicidade -->
+                <div class="mt-2">
+                    <label for="debug-happiness-slider" class="text-sm">Felicidade</label>
+                    <input type="range" id="debug-happiness-slider" min="0" max="100" class="w-full">
+                </div>
+                <!-- Sujeira -->
+                <div class="mt-2">
+                    <label for="debug-cleanliness-slider" class="text-sm">Sujeira</label>
+                    <input type="range" id="debug-cleanliness-slider" min="0" max="100" class="w-full">
+                </div>
+                <!-- Saúde -->
+                <div class="mt-2">
+                    <label for="debug-health-slider" class="text-sm">Saúde</label>
+                    <input type="range" id="debug-health-slider" min="0" max="100" class="w-full">
+                </div>
+            </div>
+        </div>
+    </section>
     <section id="tela-crianca" class="screen hidden"></section>
     <section id="tela-adulto" class="screen hidden"></section>
     <section id="tela-mestre" class="screen hidden"></section>

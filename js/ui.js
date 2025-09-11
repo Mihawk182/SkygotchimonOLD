@@ -12,7 +12,6 @@ const ui = {
     screens: document.querySelectorAll('.screen'),
     telaOvo: document.getElementById('tela-ovo'),
     telaIncubadora: document.getElementById('tela-incubadora'),
-    telaPerfilCriatura: document.getElementById('tela-perfil-criatura'),
     telaBebe: document.getElementById('tela-bebe'),
     telaCrianca: document.getElementById('tela-crianca'),
     telaAdulto: document.getElementById('tela-adulto'),
@@ -31,6 +30,32 @@ const ui = {
     humiditySlider: document.getElementById('humidity-slider'),
     lightSlider: document.getElementById('light-slider'),
     eggFeedback: document.getElementById('egg-feedback'),
+
+    // Elementos da Tela do Bebê
+    creatureDisplay: document.getElementById('creature-display'),
+    creatureName: document.getElementById('creature-name'),
+    creatureImage: document.getElementById('creature-image'),
+    
+    // Barras de Status
+    growthBar: document.getElementById('growth-bar'),
+    hungerBar: document.getElementById('hunger-bar'),
+    happinessBar: document.getElementById('happiness-bar'),
+    cleanlinessBar: document.getElementById('cleanliness-bar'),
+    healthBar: document.getElementById('health-bar'),
+    
+    // Botões de Ação
+    feedBtn: document.getElementById('feed-btn'),
+    playBtn: document.getElementById('play-btn'),
+    cleanBtn: document.getElementById('clean-btn'),
+    sleepBtn: document.getElementById('sleep-btn'),
+
+    // Elementos de Debug
+    debugToggleBtn: document.getElementById('debug-toggle-btn'),
+    debugPanel: document.getElementById('debug-panel'),
+    debugHungerSlider: document.getElementById('debug-hunger-slider'),
+    debugHappinessSlider: document.getElementById('debug-happiness-slider'),
+    debugCleanlinessSlider: document.getElementById('debug-cleanliness-slider'),
+    debugHealthSlider: document.getElementById('debug-health-slider'),
 };
 
 /**

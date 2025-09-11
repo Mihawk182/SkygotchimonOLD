@@ -93,3 +93,65 @@ body {
     cursor: not-allowed;
     transform: none;
 }
+
+/* Estilos para a Tela da Criatura */
+.status-bar {
+    display: flex;
+    flex-direction: column;
+}
+
+.bar-label {
+    font-size: 0.875rem; /* 14px */
+    font-weight: 600;
+    margin-bottom: 0.25rem; /* 4px */
+    color: #cbd5e1; /* gray-300 */
+}
+
+.bar-background {
+    width: 100%;
+    height: 1rem; /* 16px */
+    background-color: #4a5568; /* gray-700 */
+    border-radius: 9999px; /* rounded-full */
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 0.5s ease-in-out;
+}
+
+.action-btn {
+    width: 3.5rem; /* 56px */
+    height: 3.5rem; /* 56px */
+    padding: 0; /* A imagem preencherá todo o botão */
+    border-radius: 0.5rem; /* rounded-lg */
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Garante que a imagem respeite o border-radius */
+}
+
+.action-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Garante que a imagem cubra todo o botão sem distorcer */
+}
+
+#tela-bebe {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.status-panel {
+    background-color: rgba(26, 32, 44, 0.7); /* Cor escura semitransparente */
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+    -webkit-backdrop-filter: blur(4px); /* Para compatibilidade com Safari */
+}
