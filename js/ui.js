@@ -12,11 +12,7 @@ const ui = {
     screens: document.querySelectorAll('.screen'),
     telaOvo: document.getElementById('tela-ovo'),
     telaIncubadora: document.getElementById('tela-incubadora'),
-    telaBebe: document.getElementById('tela-bebe'),
-    telaCrianca: document.getElementById('tela-crianca'),
-    telaAdulto: document.getElementById('tela-adulto'),
-    telaMestre: document.getElementById('tela-mestre'),
-    telaSupremo: document.getElementById('tela-supremo'),
+    telaCuidados: document.getElementById('tela-cuidados'),
 
     // Elementos da Tela do Ovo
     eggContainers: document.querySelectorAll('.egg-container'),
@@ -31,7 +27,7 @@ const ui = {
     lightSlider: document.getElementById('light-slider'),
     eggFeedback: document.getElementById('egg-feedback'),
 
-    // Elementos da Tela do Bebê
+    // Elementos da Tela de Cuidados
     creatureDisplay: document.getElementById('creature-display'),
     creatureName: document.getElementById('creature-name'),
     creatureImage: document.getElementById('creature-image'),
@@ -42,12 +38,18 @@ const ui = {
     happinessBar: document.getElementById('happiness-bar'),
     cleanlinessBar: document.getElementById('cleanliness-bar'),
     healthBar: document.getElementById('health-bar'),
+    strengthBarContainer: document.getElementById('strength-bar-container'),
+    strengthBar: document.getElementById('strength-bar'),
+    intelligenceBarContainer: document.getElementById('intelligence-bar-container'),
+    intelligenceBar: document.getElementById('intelligence-bar'),
     
     // Botões de Ação
     feedBtn: document.getElementById('feed-btn'),
     playBtn: document.getElementById('play-btn'),
     cleanBtn: document.getElementById('clean-btn'),
     sleepBtn: document.getElementById('sleep-btn'),
+    studyBtn: document.getElementById('study-btn'),
+    trainBtn: document.getElementById('train-btn'),
 
     // Elementos de Debug
     debugToggleBtn: document.getElementById('debug-toggle-btn'),
@@ -122,4 +124,3 @@ function updateProgressBarColor(isCorrect) {
 }
 
 export { ui, showScreen, toggleConfirmButton, deselectEggs, updateProgressBarColor };
-
