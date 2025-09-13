@@ -16,7 +16,6 @@ const ui = {
 
     // Elementos da Tela do Ovo
     eggContainers: document.querySelectorAll('.egg-container'),
-    confirmEggBtn: document.getElementById('confirm-egg-btn'),
     
     // Elementos da Tela da Incubadora
     eggImageIncubator: document.getElementById('egg-image-incubator'),
@@ -65,6 +64,7 @@ const ui = {
     popupEggTitle: document.getElementById('popup-egg-title'),
     popupEggDescription: document.getElementById('popup-egg-description'),
     popupContinueBtn: document.getElementById('popup-continue-btn'),
+    popupBackBtn: document.getElementById('popup-back-btn'),
 };
 
 /**
@@ -81,20 +81,6 @@ function showScreen(targetScreenId) {
             screen.classList.add('hidden');
         }
     });
-}
-
-/**
- * Habilita ou desabilita o botão de confirmação.
- * @param {boolean} enable - True para habilitar, False para desabilitar.
- */
-function toggleConfirmButton(enable) {
-    if (enable) {
-        ui.confirmEggBtn.disabled = false;
-        ui.confirmEggBtn.style.opacity = '1';
-    } else {
-        ui.confirmEggBtn.disabled = true;
-        ui.confirmEggBtn.style.opacity = '0';
-    }
 }
 
 /**
@@ -123,4 +109,4 @@ function updateProgressBarColor(isCorrect) {
     }
 }
 
-export { ui, showScreen, toggleConfirmButton, deselectEggs, updateProgressBarColor };
+export { ui, showScreen, deselectEggs, updateProgressBarColor };

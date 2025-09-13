@@ -19,7 +19,7 @@
                 <!-- Primeira linha: 4 ovos -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="egg-container w-32 h-32 flex flex-col items-center justify-center" data-element="fire">
-                        <img src="assets/images/eggs/fire_egg.png" alt="Ovo de Fogo" class="egg-image">
+                        <video src="assets/videos/eggs/fire_egg.mp4" class="egg-image" autoplay loop muted playsinline></video>
                         <p class="egg-label">Fogo</p>
                     </div>
                     <div class="egg-container locked w-32 h-32 flex flex-col items-center justify-center" data-element="water">
@@ -66,7 +66,6 @@
                     </div>
                 </div>
             </div>
-            <button id="confirm-egg-btn" class="mt-8 px-6 py-3 bg-indigo-600 rounded-full text-lg font-bold shadow-lg opacity-0 transition-opacity duration-300" disabled>Confirmar</button>
         </div>
     </section>
 
@@ -75,7 +74,7 @@
         <div class="flex flex-col items-center justify-center min-h-screen p-4">
             <h1 class="text-4xl font-bold mb-8 text-center">Incubando o Ovo</h1>
             <div id="incubator-container" class="relative w-full max-w-xl">
-                <img id="egg-image-incubator" src="" alt="Ovo na Incubadora" class="w-2/3 mx-auto">
+                <video id="egg-image-incubator" src="" alt="Ovo na Incubadora" class="w-2/3 mx-auto" autoplay loop playsinline></video>
                 <p id="egg-feedback" class="text-center text-lg mt-4"></p>
             </div>
             <div class="w-full max-w-md mt-8">
@@ -189,7 +188,7 @@
         <div class="bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full p-6 flex flex-col items-center">
             <!-- Imagem do Ovo -->
             <div class="w-full flex justify-center mb-4">
-                <img id="popup-egg-image" src="" alt="Ovo Selecionado" class="w-48 h-48">
+                <video id="popup-egg-image" src="" alt="Ovo Selecionado" class="w-48 h-48" autoplay loop playsinline></video>
             </div>
     
             <!-- Conteúdo de Texto -->
@@ -200,8 +199,9 @@
             </div>
     
             <!-- Botão de Continuar -->
-            <div class="w-full text-center mt-6">
-                <button id="popup-continue-btn" class="px-6 py-2 bg-indigo-600 rounded-md font-bold">Continuar</button>
+            <div class="w-full flex justify-center gap-4 mt-6">
+                <button id="popup-back-btn" class="px-6 py-2 bg-gray-600 hover:bg-gray-700 rounded-md font-bold">Voltar</button>
+                <button id="popup-continue-btn" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-md font-bold">Confirmar</button>
             </div>
         </div>
     </div>

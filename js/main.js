@@ -5,7 +5,7 @@
  * gerencia a navegação entre as telas e controla a lógica das fases do jogo.
  */
 
-import { ui, showScreen, toggleConfirmButton, deselectEggs } from './ui.js';
+import { ui, showScreen, deselectEggs } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Constantes de Jogo (para balanceamento) ---
@@ -83,8 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function init() {
         // Conecta todos os botões às suas funções
-        ui.confirmEggBtn.addEventListener('click', () => { if (gameState.incubation.selectedEggElement) showEggInfoPopup(gameState.incubation.selectedEggElement); });
-        ui.popupContinueBtn.addEventListener('click', () => { ui.eggInfoPopup.classList.add('hidden'); startIncubation(); });
+        ui.popupContinueBtn.addEventListener('click', handlePopupContinue);
+        ui.popupBackBtn.addEventListener('click', handlePopupBack);
         ui.feedBtn.addEventListener('click', handleFeed);
         ui.playBtn.addEventListener('click', handlePlay);
         ui.cleanBtn.addEventListener('click', handleClean);
@@ -108,16 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.eggContainers.forEach(egg => {
             if (egg.classList.contains('locked')) return;
             egg.addEventListener('click', () => {
-                if (egg.classList.contains('selected')) {
-                    egg.classList.remove('selected');
-                    gameState.incubation.selectedEggElement = null;
-                    toggleConfirmButton(false);
-                } else {
-                    deselectEggs(egg);
-                    egg.classList.add('selected');
-                    gameState.incubation.selectedEggElement = egg.dataset.element;
-                    toggleConfirmButton(true);
-                }
+                const element = egg.dataset.element;
+                gameState.incubation.selectedEggElement = element;
+                deselectEggs(egg); // Mantém a lógica de deselecionar os outros
+                egg.classList.add('selected'); // Marca o ovo clicado
+                showEggInfoPopup(element);
             });
         });
 
@@ -127,13 +122,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Lógica de Telas e UI ---
 
+    /**
+     * Lida com o clique no botão "Voltar" do pop-up de informações do ovo.
+     */
+    function handlePopupBack() {
+        // Pausa o vídeo para parar o som e esconde o pop-up
+        ui.popupEggImage.pause();
+        ui.popupEggImage.src = '';
+        ui.eggInfoPopup.classList.add('hidden');
+        deselectEggs(null); // Remove a seleção de todos os ovos
+        gameState.incubation.selectedEggElement = null;
+    }
+
+    /**
+     * Lida com o clique no botão "Confirmar" do pop-up de informações do ovo.
+     * Pausa o vídeo do pop-up e inicia a incubação.
+     */
+    function handlePopupContinue() {
+        ui.eggInfoPopup.classList.add('hidden');
+        ui.popupEggImage.pause();
+        ui.popupEggImage.src = '';
+        startIncubation();
+    }
+
     function showEggInfoPopup(element) {
         const info = eggInfo[element];
         if (!info) {
             startIncubation();
             return;
         }
-        ui.popupEggImage.src = `assets/images/eggs/${element}_egg.png`;
+        ui.popupEggImage.src = `assets/videos/eggs/${element}_egg.mp4`;
         ui.popupEggTitle.textContent = info.title;
         ui.popupEggDescription.innerHTML = info.description;
         ui.eggInfoPopup.classList.remove('hidden');
@@ -165,8 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startIncubation() {
         if (gameState.incubation.isIncubating) return;
-        const eggImagePath = `assets/images/eggs/${gameState.incubation.selectedEggElement}_egg.png`;
-        ui.eggImageIncubator.src = eggImagePath;
+        const eggVideoPath = `assets/videos/eggs/${gameState.incubation.selectedEggElement}_egg.mp4`;
+        ui.eggImageIncubator.src = eggVideoPath;
         gameState.incubation.isIncubating = true;
         showScreen('tela-incubadora');
 
@@ -192,6 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function hatchEgg() {
         clearInterval(gameState.incubation.interval);
         gameState.incubation.isIncubating = false;
+
+        // Pausa o vídeo da incubadora para garantir que o som pare antes de ir para a próxima tela.
+        ui.eggImageIncubator.pause();
+        ui.eggImageIncubator.src = '';
         
         const creature = gameState.creature;
         creature.element = gameState.incubation.selectedEggElement;
