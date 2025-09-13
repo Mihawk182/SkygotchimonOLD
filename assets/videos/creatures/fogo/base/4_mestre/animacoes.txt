@@ -1,0 +1,47 @@
+Animações para o Estágio Mestre
+
+1. Animações de Interação (Ações do Jogador):
+
+Comendo: A criatura com a boca aberta, mastigando e engolindo.
+
+Tomando Banho: A criatura sendo esfregada, com bolhas de sabão, e parecendo limpa.
+
+Sendo Acariciada: A criatura emitindo corações ou com uma expressão feliz.
+
+Sendo Curada: A criatura tomando um remédio, com uma animação que a deixa mais animada.
+
+Dormindo: A criatura de olhos fechados, respirando lentamente.
+
+
+
+2. Animações de Estado (Condição da Criatura):
+
+Parado/Normal: A criatura parada, com uma animação sutil (por exemplo, piscando os olhos ou balançando um pouco).
+
+Feliz: A criatura sorrindo ou pulando de alegria.
+
+Triste: A criatura com uma expressão de choro ou com a cabeça baixa.
+
+Suja: A criatura com sujeira visível no corpo e uma expressão de desconforto.
+
+Doente: A criatura com uma cor pálida, com febre ou com símbolos de doença (X ou espirros) sobre a cabeça.
+
+Com Fome: A criatura com a barriga roncando ou implorando por comida.
+
+
+
+3. Animações de Treinamento (Foco no Atributo Mestre):
+
+Super Primordial (Domínio Absoluto): A criatura faz movimentos que combinam as diferentes formas que ela poderia ter.
+
+Psíquica (Clarividência): A criatura flutua, e vários símbolos ou pensamentos de outras criaturas aparecem ao seu redor.
+
+Lutadora (Força Indomável): A criatura emite uma aura de combate e dá um soco que quebra uma rocha gigante ou abre uma fenda no chão.
+
+Mágica (Magia Pura): A criatura conjura um feitiço poderoso que preenche a tela com um efeito mágico.
+
+Sagrada (Ascensão Espiritual): A criatura se ajoelha ou levita e emite um brilho intenso que purifica o ambiente ao redor.
+
+Científica (Tecnologia Superior): A criatura usa seus braços para criar um holograma complexo ou um portal para outra dimensão.
+
+Profana (Corrupção Extrema): A criatura absorve energia das sombras ou corrompe objetos com uma névoa escura.
