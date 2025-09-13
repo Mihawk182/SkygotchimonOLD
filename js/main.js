@@ -114,6 +114,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 egg.classList.add('selected'); // Marca o ovo clicado
                 showEggInfoPopup(element);
             });
+
+            // Adiciona som ao passar o mouse sobre o ovo
+            egg.addEventListener('mouseenter', () => {
+                // Encontra o elemento de vídeo dentro do container do ovo
+                const video = egg.querySelector('video.egg-image');
+                if (video) {
+                    video.muted = false;  // Ativa o som
+                    video.play();       // Garante que o vídeo continue tocando
+                }
+            });
+
+            egg.addEventListener('mouseleave', () => {
+                const video = egg.querySelector('video.egg-image');
+                if (video) {
+                    video.muted = true; // Desativa o som
+                }
+            });
         });
 
         setupDebugControls();
