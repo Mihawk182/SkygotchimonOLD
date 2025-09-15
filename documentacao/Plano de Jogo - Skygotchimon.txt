@@ -1,0 +1,28 @@
+Plano de Jogo - Skygotchimon
+
+## Descrição do Jogo
+
+Skygotchimon é um jogo de bichinho virtual para web, inspirado nos clássicos Tamagotchi e Digimon. O objetivo principal é cuidar e evoluir uma criatura, chamada Skygotchimon, desde o seu nascimento (a partir de um ovo) até a sua forma final e mais poderosa.
+
+### Ciclo de Vida e Evolução:
+O jogador começa com um ovo que, após um período de incubação, choca em uma criatura na sua primeira fase (Bebê). A criatura passará por diversas fases de evolução:
+1.  Bebê
+2.  Criança
+3.  Adulto
+4.  Mestre
+5.  Supremo
+
+A evolução para o estágio seguinte depende do cuidado que o jogador oferece à criatura.
+
+### Cuidados e Interação:
+O jogador precisa monitorar e atender às necessidades básicas do seu Skygotchimon para mantê-lo saudável e feliz. As principais interações incluem:
+*   **Alimentar:** Dar comida para saciar a fome.
+*   **Limpar:** Limpar a sujeira para evitar doenças.
+*   **Brincar:** Interagir através de mini-games para aumentar a felicidade.
+*   **Curar:** Administrar remédios quando a criatura fica doente.
+*   **Dormir:** Colocar a criatura para dormir para recuperar energia.
+
+O estado do Skygotchimon (fome, sujeira, tristeza, doença) será indicado por alertas visuais na interface.
+
+### Objetivo Final:
+O objetivo é guiar o Skygotchimon por todo o seu ciclo de vida, garantindo que ele cresça forte e saudável para alcançar a sua forma Suprema, a mais poderosa de todas. O tipo de evolução e a forma final podem variar dependendo da qualidade dos cuidados e do tipo elemental da criatura (ex: Fogo, Água, Ar, etc.).
