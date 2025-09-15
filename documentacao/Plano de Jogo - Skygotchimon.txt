@@ -1,28 +1,77 @@
-Plano de Jogo - Skygotchimon
+Documento de Detalhamento do Projeto: Skygotchimon
+1. Visão Geral do Projeto
+Título: Skygotchimon
 
-## Descrição do Jogo
+Gênero: Jogo de bichinho virtual e RPG de gerenciamento.
 
-Skygotchimon é um jogo de bichinho virtual para web, inspirado nos clássicos Tamagotchi e Digimon. O objetivo principal é cuidar e evoluir uma criatura, chamada Skygotchimon, desde o seu nascimento (a partir de um ovo) até a sua forma final e mais poderosa.
+Conceito: O jogador deve cuidar de uma criatura mágica, guiando-a por uma jornada de evolução, gerenciando seu próprio santuário e purificando os reinos do mundo. O jogo é inspirado em Tamagotchi (cuidado), Digimon (evolução), Skylanders (elementos), Summoners War (combate e runas) e Fallout Shelter (gerenciamento de base).
 
-### Ciclo de Vida e Evolução:
-O jogador começa com um ovo que, após um período de incubação, choca em uma criatura na sua primeira fase (Bebê). A criatura passará por diversas fases de evolução:
-1.  Bebê
-2.  Criança
-3.  Adulto
-4.  Mestre
-5.  Supremo
+2. História e Premissa
+A história começa com o jogador, um simples camponês, em sua casa isolada. De repente, um portal se abre, e um casal de criaturas, prestes a ser completamente corrompido por uma energia maligna, entrega um ovo ao camponês. Junto com o ovo, vem uma libélula mágica chamada Cintil, que se tornará a guia e mentora do jogador. Os pais da criatura são corrompidos, e o portal se fecha, deixando o camponês sozinho com a responsabilidade de cuidar do ovo e desvendar o mistério por trás da corrupção.
 
-A evolução para o estágio seguinte depende do cuidado que o jogador oferece à criatura.
+3. O Santuário e a Mecânica de Construção
+O Santuário é a base do jogador e um elemento central da jogabilidade, similar a um abrigo.
 
-### Cuidados e Interação:
-O jogador precisa monitorar e atender às necessidades básicas do seu Skygotchimon para mantê-lo saudável e feliz. As principais interações incluem:
-*   **Alimentar:** Dar comida para saciar a fome.
-*   **Limpar:** Limpar a sujeira para evitar doenças.
-*   **Brincar:** Interagir através de mini-games para aumentar a felicidade.
-*   **Curar:** Administrar remédios quando a criatura fica doente.
-*   **Dormir:** Colocar a criatura para dormir para recuperar energia.
+Início: O jogo começa com o camponês em sua casa simples. Cintil explica a necessidade de um ambiente seguro para o ovo.
 
-O estado do Skygotchimon (fome, sujeira, tristeza, doença) será indicado por alertas visuais na interface.
+Tutorial: A primeira missão é um tutorial de construção. Cintil usa sua magia para fornecer os materiais básicos para a Incubadora, o primeiro cômodo. A partir daí, o jogador pode construir e expandir o santuário com os recursos que coletar.
 
-### Objetivo Final:
-O objetivo é guiar o Skygotchimon por todo o seu ciclo de vida, garantindo que ele cresça forte e saudável para alcançar a sua forma Suprema, a mais poderosa de todas. O tipo de evolução e a forma final podem variar dependendo da qualidade dos cuidados e do tipo elemental da criatura (ex: Fogo, Água, Ar, etc.).
+Funcionalidade: Os cômodos do santuário servem como estações de trabalho para as especializações da criatura, além de oferecer bônus para seus atributos e habilidades.
+
+4. Estágios e Caminhos de Evolução
+A criatura passa por 6 estágios, com a evolução se ramificando a partir do estágio Criança, baseada nas escolhas do jogador.
+
+Ovo: Precisa ser chocado na incubadora.
+
+Bebê: A primeira forma de vida, frágil e sem especialização.
+
+Criança: A primeira ramificação da evolução, baseada nos atributos de Força e Inteligência. As formas possíveis são:
+
+Forma Primordial: Se os atributos de Força e Inteligência estiverem equilibrados.
+
+Forma Mística: Se o atributo de Inteligência for maior.
+
+Forma Terrena: Se o atributo de Força for maior.
+
+Adulto: A fase de trabalho, onde a criatura se especializa. A forma Criança evolui para uma destas formas Adultas:
+
+Se for uma Forma Primordial, pode evoluir para as formas Psíquica, Lutadora ou Super Primordial.
+
+Se for uma Forma Mística, pode evoluir para as formas Psíquica, Mágica ou Sagrada.
+
+Se for uma Forma Terrena, pode evoluir para as formas Lutadora, Científica ou Profana.
+
+Mestre: O ápice da jornada, onde a criatura atinge sua forma final e mais poderosa. As 7 formas Mestre (Super Primordial, Psíquica, Lutadora, Mágica, Sagrada, Científica, Profana) são uma combinação do elemento base com o caminho evolutivo escolhido.
+
+Supremo: Uma versão aprimorada da forma Mestre. A criatura atinge seu potencial máximo com um visual e animações que refletem seu poder final.
+
+5. Mecânicas de Jogo e Especializações
+Os 10 Elementos: O jogo possui 10 elementos (Fogo, Água, Terra, Ar, Vida, Morto-Vivo, Magia, Tecno, Luz e Trevas). Cada elemento tem uma especialização única:
+
+Vida: Fazendas e Agricultura
+
+Fogo: Culinária e Fundição
+
+Água: Pesca e Hidroponia
+
+Terra: Mineração e Escavação
+
+Ar: Transporte e Exploração
+
+Morto-Vivo: Necromancia e Transição Espiritual (coleta de almas)
+
+Magia: Alquimia e Encantamentos
+
+Tecno: Engenharia e Reparos
+
+Luz: Cura e Purificação
+
+Trevas: Forja das Sombras (criação de itens com energia sombria)
+
+Modos de Trabalho: As criaturas Adultas têm dois modos de trabalho:
+
+Modo Ocioso: A criatura coleta recursos automaticamente com base em sua especialização.
+
+Modo Ativo (Reinos): O jogador envia a criatura para missões nos 10 Reinos Elementais Corrompidos. Ao derrotar os inimigos e purificar o reino, o jogador ganha runas, essências elementais e novos ovos.
+
+Bônus das Formas Mestre: Cada forma Mestre concede um bônus único que aprimora a especialização do elemento. Por exemplo, uma criatura de Fogo na forma Mestre Lutadora pode forjar equipamentos de combate mais poderosos.
