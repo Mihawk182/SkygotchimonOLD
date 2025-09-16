@@ -83,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function init() {
         // Conecta todos os botões às suas funções
+        ui.newGameBtn.addEventListener('click', () => showScreen('tela-ovo'));
+        ui.loadGameBtn.addEventListener('click', () => console.log('Carregar Jogo clicado'));
+        ui.optionsBtn.addEventListener('click', () => console.log('Opções clicado'));
+        ui.exitBtn.addEventListener('click', () => console.log('Sair clicado'));
+
         ui.popupContinueBtn.addEventListener('click', handlePopupContinue);
         ui.popupBackBtn.addEventListener('click', handlePopupBack);
         ui.feedBtn.addEventListener('click', handleFeed);
@@ -134,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         setupDebugControls();
-        showScreen('tela-ovo');
+        showScreen('tela-menu');
     }
 
     // --- Lógica de Telas e UI ---

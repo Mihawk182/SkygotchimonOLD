@@ -9,10 +9,18 @@
 // Objeto para armazenar referências a todos os elementos do DOM
 const ui = {
     // Telas
+        // Telas
     screens: document.querySelectorAll('.screen'),
+    telaMenu: document.getElementById('tela-menu'),
     telaOvo: document.getElementById('tela-ovo'),
     telaIncubadora: document.getElementById('tela-incubadora'),
     telaCuidados: document.getElementById('tela-cuidados'),
+
+    // Elementos do Menu Principal
+    newGameBtn: document.getElementById('new-game-btn'),
+    loadGameBtn: document.getElementById('load-game-btn'),
+    optionsBtn: document.getElementById('options-btn'),
+    exitBtn: document.getElementById('exit-btn'),
 
     // Elementos da Tela do Ovo
     eggContainers: document.querySelectorAll('.egg-container'),
