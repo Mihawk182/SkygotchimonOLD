@@ -215,6 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.progressBarIncubator.firstElementChild.style.width = '0%';
         updateEggVisuals();
 
+        // Define o feedback inicial para guiar o jogador
+        ui.eggFeedback.textContent = "Ajuste os parâmetros para encontrar as condições ideais.";
+
         gameState.incubation.interval = setInterval(() => {
             if (checkIncubationConditions()) {
                 gameState.incubation.progress += INCUBATION_PROGRESS_STEP;
@@ -283,15 +286,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function checkIncubationConditions() {
         if (!gameState.incubation.selectedEggElement) {
+            console.log("checkIncubationConditions: selectedEggElement is null");
             return false;
         }
         const temp = parseInt(ui.temperatureSlider.value);
         const humidity = parseInt(ui.humiditySlider.value);
         const light = parseInt(ui.lightSlider.value);
         const conditions = idealConditions[gameState.incubation.selectedEggElement];
+
+        console.log("Current values:", { temp, humidity, light });
+        console.log("Ideal conditions:", conditions);
+
         const isTempIdeal = temp >= conditions.temp.min && temp <= conditions.temp.max;
         const isHumidityIdeal = humidity >= conditions.humidity.min && humidity <= conditions.humidity.max;
         const isLightIdeal = light >= conditions.light.min && light <= conditions.light.max;
+
+        console.log("Conditions met:", { isTempIdeal, isHumidityIdeal, isLightIdeal });
+
         return isTempIdeal && isHumidityIdeal && isLightIdeal;
     }
 
