@@ -9,13 +9,13 @@
 // Objeto para armazenar referências a todos os elementos do DOM
 const ui = {
     // Telas
-        // Telas
     screens: document.querySelectorAll('.screen'),
     telaMenu: document.getElementById('tela-menu'),
     telaOvo: document.getElementById('tela-ovo'),
     telaIncubadora: document.getElementById('tela-incubadora'),
     telaCuidados: document.getElementById('tela-cuidados'),
-
+    telaCastelo: document.getElementById('tela-castelo'), // Added
+    
     // Elementos do Menu Principal
     newGameBtn: document.getElementById('new-game-btn'),
     loadGameBtn: document.getElementById('load-game-btn'),
@@ -73,6 +73,9 @@ const ui = {
     popupEggDescription: document.getElementById('popup-egg-description'),
     popupContinueBtn: document.getElementById('popup-continue-btn'),
     popupBackBtn: document.getElementById('popup-back-btn'),
+
+    // Elementos da Tela Castelo
+    casaDiv: document.getElementById('casa-div'), // Added
 };
 
 /**
