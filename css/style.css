@@ -1,7 +1,78 @@
 /* Estilo para o menu expansivo flutuante do castelo */
-#fab-menu {
-    /* já posicionado via classes Tailwind, mas pode customizar aqui se quiser */
+/* Global hidden utility used by JS toggles */
+/* JS-specific hidden class to avoid colliding with existing 'hidden' screen styles */
+.js-hidden {
+    display: none !important;
 }
+
+/* Styles for build placeholder positioning and layout (used when visible) */
+.build-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+}
+
+/* Build menu styling */
+.build-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.build-option {
+    width: 300px; /* same width as #casa-div */
+    height: 150px; /* same height as #casa-div */
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #e2e8f0;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+.build-option:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+/* Constructed building visuals (replace the + placeholder) */
+.constructed-building {
+    position: absolute;
+    width: 75px; /* same as placeholder width */
+    height: 150px; /* same as placeholder height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 8px 14px rgba(0,0,0,0.25);
+    z-index: 12;
+    text-align: center;
+}
+.constructed-building .label {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+}
+.building-energia {
+    background: linear-gradient(180deg,#fef3c7,#f59e0b);
+    color: #1f2937;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+.building-comida {
+    background: linear-gradient(180deg,#bbf7d0,#10b981);
+    color: #064e3b;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+.building-agua {
+    background: linear-gradient(180deg,#bfdbfe,#3b82f6);
+    color: #083344;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Remove any global strong rule for #build-placeholder to allow JS control via .js-hidden */
 #fab-toggle {
     transition: box-shadow 0.2s;
 }

@@ -1,26 +1,142 @@
-// Menu expansivo do castelo (corrigido para classes)
+// Mostrar/ocultar placeholder de construção ao lado da casa (toggle, corrigido para classe do botão)
+// Consolidated DOM ready setup: menu and build toggle
 document.addEventListener('DOMContentLoaded', function () {
+    // FAB menu
     const fabMenu = document.querySelector('.fab-menu');
-    if (!fabMenu) return;
-    const fabToggle = fabMenu.querySelector('.fab-toggle');
-    const fabActions = fabMenu.querySelector('.fab-actions');
-    if (fabToggle && fabActions) {
-        fabToggle.addEventListener('click', function (e) {
-            e.stopPropagation();
-            if (fabActions.style.display === 'none' || fabActions.style.display === '') {
-                fabActions.style.display = 'flex';
-            } else {
-                fabActions.style.display = 'none';
-            }
-        });
-        // Fecha o menu ao clicar fora
+    if (fabMenu) {
+        const fabToggle = fabMenu.querySelector('.fab-toggle');
+        const fabActions = fabMenu.querySelector('.fab-actions');
+        if (fabToggle && fabActions) {
+            fabToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                if (fabActions.style.display === 'none' || fabActions.style.display === '') {
+                    fabActions.style.display = 'flex';
+                } else {
+                    fabActions.style.display = 'none';
+                }
+            });
+        }
         document.addEventListener('click', function (e) {
             if (!fabMenu.contains(e.target)) {
-                fabActions.style.display = 'none';
+                const fa = fabMenu.querySelector('.fab-actions');
+                if (fa) fa.style.display = 'none';
+            }
+        });
+    }
+
+    // Build placeholder toggle + build menu handling
+    const buildBtn = document.querySelector('.fab-actions #build-mode-btn');
+    const buildPlaceholder = document.getElementById('build-placeholder');
+    const buildMenu = document.getElementById('build-menu');
+    if (buildBtn && buildPlaceholder) {
+        let buildVisible = false;
+        // Toggle placeholder when clicking Construir
+        buildBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            buildVisible = !buildVisible;
+            if (buildVisible) {
+                buildPlaceholder.classList.remove('js-hidden');
+                buildPlaceholder.style.display = 'flex';
+                // ensure menu is hidden initially
+                if (buildMenu) {
+                    buildMenu.classList.add('js-hidden');
+                    buildMenu.style.display = 'none';
+                }
+            } else {
+                buildPlaceholder.classList.add('js-hidden');
+                buildPlaceholder.style.display = 'none';
+                if (buildMenu) {
+                    buildMenu.classList.add('js-hidden');
+                    buildMenu.style.display = 'none';
+                }
+            }
+            // close actions menu when toggling
+            const fa = document.querySelector('.fab-actions');
+            if (fa) fa.style.display = 'none';
+        });
+
+        // Clicking the placeholder toggles the build menu
+        buildPlaceholder.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (!buildMenu) return;
+            if (buildMenu.classList.contains('js-hidden')) {
+                buildMenu.classList.remove('js-hidden');
+                buildMenu.style.display = 'flex';
+            } else {
+                buildMenu.classList.add('js-hidden');
+                buildMenu.style.display = 'none';
+            }
+        });
+
+        // Wire option clicks (Energia/Comida/Água)
+        if (buildMenu) {
+            const options = buildMenu.querySelectorAll('.build-option');
+            options.forEach(opt => {
+                opt.addEventListener('click', function (ev) {
+                    ev.stopPropagation();
+                    const type = opt.getAttribute('data-type') || opt.textContent.trim().toLowerCase();
+                    // insert a new constructed building element (allow multiples)
+                    const casa = document.getElementById('casa-div');
+                    const casaParent = casa.parentElement;
+                    const parentRect = casaParent.getBoundingClientRect();
+                    const casaRect = casa.getBoundingClientRect();
+                    const gap = 10; // px gap between casa and each built element
+
+                    const builtEl = document.createElement('div');
+                    builtEl.classList.add('constructed-building');
+                    builtEl.setAttribute('data-type', type);
+                    const label = document.createElement('div');
+                    label.classList.add('label');
+                    label.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+                    builtEl.appendChild(label);
+
+                    // set class based on type
+                    if (type === 'energia' || type.toLowerCase().includes('energia')) builtEl.classList.add('building-energia');
+                    else if (type === 'comida' || type.toLowerCase().includes('comida')) builtEl.classList.add('building-comida');
+                    else builtEl.classList.add('building-agua');
+
+                    // size to match casa
+                    builtEl.style.width = casaRect.width + 'px';
+                    builtEl.style.height = casaRect.height + 'px';
+                    builtEl.style.position = 'absolute';
+
+                    // determine placement index (how many constructions already exist)
+                    const existing = casaParent.querySelectorAll('.constructed-building');
+                    const index = existing.length; // 0-based
+                    const left = (casaRect.left - parentRect.left) + casaRect.width + gap + index * (casaRect.width + gap);
+                    const top = casaRect.top - parentRect.top;
+                    builtEl.style.left = left + 'px';
+                    builtEl.style.top = top + 'px';
+
+                    // append to parent
+                    casaParent.appendChild(builtEl);
+
+                    // ensure it's visible and remove placeholder/menu
+                    builtEl.style.display = 'flex';
+                    buildMenu.classList.add('js-hidden');
+                    buildMenu.style.display = 'none';
+                    buildPlaceholder.classList.add('js-hidden');
+                    buildPlaceholder.style.display = 'none';
+                    buildVisible = false;
+                });
+            });
+        }
+
+        // Hide placeholder and menu on outside click
+        document.addEventListener('click', function (e) {
+            if (buildVisible && !buildBtn.contains(e.target) && !buildPlaceholder.contains(e.target) && !(buildMenu && buildMenu.contains(e.target))) {
+                buildPlaceholder.classList.add('js-hidden');
+                buildPlaceholder.style.display = 'none';
+                if (buildMenu) {
+                    buildMenu.classList.add('js-hidden');
+                    buildMenu.style.display = 'none';
+                }
+                buildVisible = false;
             }
         });
     }
 });
+
 /*
  * Skygotchimon - Funções da Interface do Usuário (UI)
  *
