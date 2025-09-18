@@ -24,13 +24,45 @@
         </div>
     </section>
 
+
     <!-- Tela Castelo -->
     <section id="tela-castelo" class="screen hidden">
-        <div class="flex flex-col items-center justify-center min-h-screen p-4">
+        <div class="flex flex-col items-center justify-center min-h-screen p-4 relative">
             <h1 class="text-4xl font-bold mb-8 text-center">Castelo</h1>
             <div id="casa-div" style="width: 300px; height: 150px; border: 1px solid white; display: flex; align-items: center; justify-content: center; cursor: pointer;">
                 Casa
             </div>
+            <!-- Menu Expansivo -->
+            <div id="fab-menu" class="fixed bottom-4 right-4 z-50 flex flex-col-reverse items-end">
+                <!-- Menu expansivo (agora acima do botão) -->
+                    <div id="fab-actions" class="bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col items-end mb-2" style="display: none; min-width: 160px;">
+                    <button id="build-mode-btn" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded font-bold text-base text-right transition">Construir</button>
+                </div>
+                <!-- Botão principal (menu/hamburger) -->
+                <button id="fab-toggle" class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg focus:outline-none">
+                    <span class="sr-only">Abrir menu</span>
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                        <line x1="5" y1="7" x2="19" y2="7" stroke-linecap="round" />
+                        <line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round" />
+                        <line x1="5" y1="17" x2="19" y2="17" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+                <div class="fixed bottom-4 right-4 z-50 flex flex-col-reverse items-end fab-menu">
+                    <!-- Botão principal (menu/hamburger) -->
+                    <button class="w-16 h-16 bg-blue-600 text-white rounded-full flex items-center justify-center shadow-lg focus:outline-none fab-toggle">
+                        <span class="sr-only">Abrir menu</span>
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+                            <line x1="5" y1="7" x2="19" y2="7" stroke-linecap="round" />
+                            <line x1="5" y1="12" x2="19" y2="12" stroke-linecap="round" />
+                            <line x1="5" y1="17" x2="19" y2="17" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <!-- Menu expansivo (acima do botão) -->
+                    <div class="bg-gray-800 rounded-lg shadow-lg p-4 flex flex-col items-end mb-2 fab-actions" style="display: none; min-width: 160px;">
+                        <button id="build-mode-btn" class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded font-bold text-base text-right transition">Construir</button>
+                    </div>
+                </div>
         </div>
     </section>
 

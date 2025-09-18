@@ -1,3 +1,26 @@
+// Menu expansivo do castelo (corrigido para classes)
+document.addEventListener('DOMContentLoaded', function () {
+    const fabMenu = document.querySelector('.fab-menu');
+    if (!fabMenu) return;
+    const fabToggle = fabMenu.querySelector('.fab-toggle');
+    const fabActions = fabMenu.querySelector('.fab-actions');
+    if (fabToggle && fabActions) {
+        fabToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (fabActions.style.display === 'none' || fabActions.style.display === '') {
+                fabActions.style.display = 'flex';
+            } else {
+                fabActions.style.display = 'none';
+            }
+        });
+        // Fecha o menu ao clicar fora
+        document.addEventListener('click', function (e) {
+            if (!fabMenu.contains(e.target)) {
+                fabActions.style.display = 'none';
+            }
+        });
+    }
+});
 /*
  * Skygotchimon - Funções da Interface do Usuário (UI)
  *
@@ -14,7 +37,7 @@ const ui = {
     telaOvo: document.getElementById('tela-ovo'),
     telaIncubadora: document.getElementById('tela-incubadora'),
     telaCuidados: document.getElementById('tela-cuidados'),
-    telaCastelo: document.getElementById('tela-castelo'), // Added
+    telaCastelo: document.getElementById('tela-castelo'),
     
     // Elementos do Menu Principal
     newGameBtn: document.getElementById('new-game-btn'),
@@ -75,7 +98,8 @@ const ui = {
     popupBackBtn: document.getElementById('popup-back-btn'),
 
     // Elementos da Tela Castelo
-    casaDiv: document.getElementById('casa-div'), // Added
+    casaDiv: document.getElementById('casa-div'),
+    buildModeBtn: document.getElementById('build-mode-btn'),
 };
 
 /**
