@@ -72,6 +72,52 @@
     border: 1px solid rgba(0,0,0,0.08);
 }
 
+/* Elevador: smaller building (75x150) */
+.building-elevador {
+    background: linear-gradient(180deg,#f3f4f6,#9ca3af);
+    color: #111827;
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* Centered build modal */
+.build-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.45);
+}
+.build-modal-box {
+    width: 420px;
+    height: 420px;
+    background: rgba(26,32,44,0.95);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.04);
+}
+.build-modal-options {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+.build-modal .build-option {
+    width: 120px;
+    height: 120px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
 /* Remove any global strong rule for #build-placeholder to allow JS control via .js-hidden */
 #fab-toggle {
     transition: box-shadow 0.2s;
