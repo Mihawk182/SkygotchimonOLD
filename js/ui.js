@@ -31,32 +31,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const buildModal = document.getElementById('build-modal');
     if (buildBtn && buildPlaceholder) {
         let buildVisible = false;
+        let currentAnchor = null; // if set, constructions will use this anchor (floor)
+        const floorPlaceholders = new Map(); // key: topPx (rounded), value: element
         const buildPlaceholderUp = document.getElementById('build-placeholder-up');
         const buildPlaceholderDown = document.getElementById('build-placeholder-down');
+        const fabToggleBtn = document.querySelector('.fab-menu .fab-toggle');
+
+        function setBuildIndicator(active) {
+            if (!fabToggleBtn) return;
+            if (active) fabToggleBtn.classList.add('fab-active');
+            else fabToggleBtn.classList.remove('fab-active');
+        }
         // Update the placeholder position so it appears to the right of the
         // rightmost constructed building (or the casa if none exist).
+        // Helper: find rightmost constructed building that sits on the same
+        // vertical baseline as the casa (so stacked elevators above/below
+        // don't affect horizontal sequencing).
+        function getBaselineRightmost(casaParent, casaRect) {
+            const all = Array.from(casaParent.querySelectorAll('.constructed-building'));
+            if (!all.length) return null;
+            const row = all.filter(el => {
+                const r = el.getBoundingClientRect();
+                return Math.abs(r.top - casaRect.top) < 4; // allow small tolerance
+            });
+            if (row.length === 0) return null;
+            return row.reduce((acc, el) => {
+                const r = el.getBoundingClientRect();
+                const right = r.left + r.width;
+                const accR = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
+                return right > accR ? el : acc;
+            }, row[0]);
+        }
         function updateBuildPlaceholderPosition() {
             const casa = document.getElementById('casa-div');
             if (!casa) return;
             const casaParent = casa.parentElement;
             const parentRect = casaParent.getBoundingClientRect();
             const gap = 10;
-
-            // Find existing constructions and pick the rightmost one
-            const existing = Array.from(casaParent.querySelectorAll('.constructed-building'));
-            let anchorRect;
-            if (existing.length > 0) {
-                // rightmost = one with largest (left + width)
-                let rightmost = existing.reduce((acc, el) => {
-                    const r = el.getBoundingClientRect();
-                    const right = r.left + r.width;
-                    const accRight = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
-                    return right > accRight ? el : acc;
-                }, existing[0]);
-                anchorRect = rightmost.getBoundingClientRect();
-            } else {
-                anchorRect = casa.getBoundingClientRect();
-            }
+            // Find rightmost element on the casa baseline (same top). If none,
+            // fall back to casa itself.
+            const casaRect = casa.getBoundingClientRect();
+            const baselineRightmost = getBaselineRightmost(casaParent, casaRect);
+            const anchorRect = (baselineRightmost ? baselineRightmost.getBoundingClientRect() : casaRect);
 
             // Compute left and top relative to parent
             const left = (anchorRect.left - parentRect.left) + anchorRect.width + gap;
@@ -75,6 +91,98 @@ document.addEventListener('DOMContentLoaded', function () {
                 buildPlaceholderDown.classList.add('js-hidden');
                 buildPlaceholderDown.style.display = 'none';
             }
+            // update any floor placeholders as well
+            updateFloorPlaceholders();
+        }
+
+        // Create or update horizontal placeholders for every elevator floor.
+        // One placeholder appears to the right of each elevator (by floor/top).
+        function updateFloorPlaceholders() {
+            const casa = document.getElementById('casa-div');
+            if (!casa) return;
+            const casaParent = casa.parentElement;
+            const parentRect = casaParent.getBoundingClientRect();
+            const gap = 10;
+
+            // find all elevator elements
+            const elevators = Array.from(casaParent.querySelectorAll('.constructed-building.building-elevador'));
+            // group by floor (top coordinate rounded)
+            const byTop = new Map();
+            elevators.forEach(el => {
+                const r = el.getBoundingClientRect();
+                const topKey = Math.round(r.top);
+                if (!byTop.has(topKey)) byTop.set(topKey, []);
+                byTop.get(topKey).push(el);
+            });
+
+            // Mark existing keys to keep
+            const keepKeys = new Set();
+            byTop.forEach((els, topKey) => {
+                // choose rightmost elevator on this floor for anchor
+                const anchor = els.reduce((acc, el) => {
+                    const r = el.getBoundingClientRect();
+                    const right = r.left + r.width;
+                    const accR = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
+                    return right > accR ? el : acc;
+                }, els[0]);
+
+                keepKeys.add(topKey);
+                let ph = floorPlaceholders.get(topKey);
+                const anchorRect = anchor.getBoundingClientRect();
+                const left = anchorRect.left - parentRect.left + anchorRect.width + gap;
+                const top = anchorRect.top - parentRect.top;
+
+                if (!ph) {
+                    ph = document.createElement('div');
+                    ph.classList.add('js-hidden', 'build-placeholder', 'floor-placeholder');
+                    ph.style.position = 'absolute';
+                    ph.style.width = anchorRect.width + 'px';
+                    ph.style.height = anchorRect.height + 'px';
+                    ph.style.border = '2px dashed #f97316';
+                    ph.style.background = 'rgba(249,115,22,0.06)';
+                    ph.style.zIndex = '10';
+                    ph.style.fontSize = '2.5rem';
+                    ph.style.color = '#f97316';
+                    ph.style.fontWeight = 'bold';
+                    ph.style.display = 'flex';
+                    ph.style.alignItems = 'center';
+                    ph.style.justifyContent = 'center';
+                    ph.textContent = '+';
+                    casaParent.appendChild(ph);
+                    // click handler: set current anchor to this floor's anchor and open modal
+                    ph.addEventListener('click', function (ev) {
+                        ev.stopPropagation();
+                        currentAnchor = anchor;
+                        if (buildModal) {
+                            buildModal.classList.remove('js-hidden');
+                            buildModal.style.display = 'flex';
+                        }
+                        // keep other menus hidden
+                        if (buildMenu) {
+                            buildMenu.classList.add('js-hidden');
+                            buildMenu.style.display = 'none';
+                        }
+                    });
+                    floorPlaceholders.set(topKey, ph);
+                }
+
+                // size/position (use anchor size to match elevator width/height)
+                ph.style.left = left + 'px';
+                ph.style.top = top + 'px';
+                ph.style.width = anchorRect.width + 'px';
+                ph.style.height = anchorRect.height + 'px';
+                ph.classList.remove('js-hidden');
+                ph.style.display = 'flex';
+            });
+
+            // remove placeholders for floors that no longer exist
+            Array.from(floorPlaceholders.keys()).forEach(key => {
+                if (!keepKeys.has(key)) {
+                    const el = floorPlaceholders.get(key);
+                    if (el && el.parentElement) el.parentElement.removeChild(el);
+                    floorPlaceholders.delete(key);
+                }
+            });
         }
         // Toggle placeholder when clicking Construir
         buildBtn.addEventListener('click', function (e) {
@@ -83,32 +191,29 @@ document.addEventListener('DOMContentLoaded', function () {
             if (buildVisible) {
                 // position placeholder next to the rightmost constructed building
                 updateBuildPlaceholderPosition();
+                // create/update floor placeholders for any existing elevators
+                updateFloorPlaceholders();
                 buildPlaceholder.classList.remove('js-hidden');
                 buildPlaceholder.style.display = 'flex';
-                // If the rightmost constructed building is an elevator, show the up/down placeholders immediately
+                // If the rightmost constructed building on the baseline is an elevator,
+                // show the up/down placeholders immediately
                 const casa = document.getElementById('casa-div');
                 const casaParent = casa.parentElement;
-                const existing = Array.from(casaParent.querySelectorAll('.constructed-building'));
-                if (existing.length > 0) {
-                    const rightmost = existing.reduce((acc, el) => {
-                        const r = el.getBoundingClientRect();
-                        const right = r.left + r.width;
-                        const accRight = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
-                        return right > accRight ? el : acc;
-                    }, existing[0]);
-                    if (rightmost.classList.contains('building-elevador') && buildPlaceholderUp && buildPlaceholderDown) {
-                        updateElevatorPlaceholders(rightmost);
-                        buildPlaceholderUp.classList.remove('js-hidden');
-                        buildPlaceholderUp.style.display = 'flex';
-                        buildPlaceholderDown.classList.remove('js-hidden');
-                        buildPlaceholderDown.style.display = 'flex';
-                    }
+                const casaRect = casa.getBoundingClientRect();
+                const baselineRightmostNow = getBaselineRightmost(casaParent, casaRect);
+                if (baselineRightmostNow && baselineRightmostNow.classList.contains('building-elevador') && buildPlaceholderUp && buildPlaceholderDown) {
+                    updateElevatorPlaceholders(baselineRightmostNow);
+                    buildPlaceholderUp.classList.remove('js-hidden');
+                    buildPlaceholderUp.style.display = 'flex';
+                    buildPlaceholderDown.classList.remove('js-hidden');
+                    buildPlaceholderDown.style.display = 'flex';
                 }
                 // ensure menu is hidden initially
                 if (buildMenu) {
                     buildMenu.classList.add('js-hidden');
                     buildMenu.style.display = 'none';
                 }
+                setBuildIndicator(true);
             } else {
                 buildPlaceholder.classList.add('js-hidden');
                 buildPlaceholder.style.display = 'none';
@@ -120,10 +225,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     buildPlaceholderDown.classList.add('js-hidden');
                     buildPlaceholderDown.style.display = 'none';
                 }
+                // hide and remove all floor placeholders
+                Array.from(floorPlaceholders.values()).forEach(ph => {
+                    if (ph && ph.parentElement) ph.parentElement.removeChild(ph);
+                });
+                floorPlaceholders.clear();
                 if (buildMenu) {
                     buildMenu.classList.add('js-hidden');
                     buildMenu.style.display = 'none';
                 }
+                setBuildIndicator(false);
             }
             // close actions menu when toggling
             const fa = document.querySelector('.fab-actions');
@@ -134,39 +245,23 @@ document.addEventListener('DOMContentLoaded', function () {
         buildPlaceholder.addEventListener('click', function (e) {
             e.stopPropagation();
             if (!buildModal) return;
-            // If the anchor at the rightmost position is an elevator, show up/down placeholders instead of modal
+            // If the baseline rightmost anchor is an elevator, show up/down placeholders
+            // as well as the modal so the player can either stack elevators or build
+            // horizontally to the right of the baseline.
             const casa = document.getElementById('casa-div');
             const casaParent = casa.parentElement;
-            const existing = Array.from(casaParent.querySelectorAll('.constructed-building'));
-            let rightmost = null;
-            if (existing.length > 0) {
-                rightmost = existing.reduce((acc, el) => {
-                    const r = el.getBoundingClientRect();
-                    const right = r.left + r.width;
-                    const accRight = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
-                    return right > accRight ? el : acc;
-                }, existing[0]);
-            }
-            const isElevatorAnchor = rightmost && rightmost.classList.contains('building-elevador');
+            const casaRect = casa.getBoundingClientRect();
+            const baselineRightmostOnClick = getBaselineRightmost(casaParent, casaRect);
+            const isElevatorAnchor = baselineRightmostOnClick && baselineRightmostOnClick.classList.contains('building-elevador');
             if (isElevatorAnchor && buildPlaceholderUp && buildPlaceholderDown) {
                 // position up and down placeholders centered on the elevator
-                updateElevatorPlaceholders(rightmost);
+                updateElevatorPlaceholders(baselineRightmostOnClick);
                 buildPlaceholderUp.classList.remove('js-hidden');
                 buildPlaceholderUp.style.display = 'flex';
                 buildPlaceholderDown.classList.remove('js-hidden');
                 buildPlaceholderDown.style.display = 'flex';
-                // ensure inline menu/modal are hidden
-                if (buildMenu) {
-                    buildMenu.classList.add('js-hidden');
-                    buildMenu.style.display = 'none';
-                }
-                if (buildModal) {
-                    buildModal.classList.add('js-hidden');
-                    buildModal.style.display = 'none';
-                }
-                return;
             }
-            // default behavior: show modal
+            // Always show modal so user can build to the right of the baseline
             buildModal.classList.remove('js-hidden');
             buildModal.style.display = 'flex';
             if (buildMenu) {
@@ -234,22 +329,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
             parent.appendChild(builtEl);
 
-            // hide elevator placeholders and reset build state
-            if (buildPlaceholderUp) {
-                buildPlaceholderUp.classList.add('js-hidden');
-                buildPlaceholderUp.style.display = 'none';
+            // After stacking an elevator, keep build mode active and recompute placeholders
+            updateBuildPlaceholderPosition();
+            // If baseline rightmost is elevator, show up/down placeholders
+            const casaRect = casa.getBoundingClientRect();
+            const baselineRightmost = getBaselineRightmost(parent, casaRect);
+            if (baselineRightmost && baselineRightmost.classList.contains('building-elevador') && buildPlaceholderUp && buildPlaceholderDown) {
+                updateElevatorPlaceholders(baselineRightmost);
+                buildPlaceholderUp.classList.remove('js-hidden');
+                buildPlaceholderUp.style.display = 'flex';
+                buildPlaceholderDown.classList.remove('js-hidden');
+                buildPlaceholderDown.style.display = 'flex';
+            } else {
+                if (buildPlaceholderUp) {
+                    buildPlaceholderUp.classList.add('js-hidden');
+                    buildPlaceholderUp.style.display = 'none';
+                }
+                if (buildPlaceholderDown) {
+                    buildPlaceholderDown.classList.add('js-hidden');
+                    buildPlaceholderDown.style.display = 'none';
+                }
+                buildPlaceholder.classList.remove('js-hidden');
+                buildPlaceholder.style.display = 'flex';
             }
-            if (buildPlaceholderDown) {
-                buildPlaceholderDown.classList.add('js-hidden');
-                buildPlaceholderDown.style.display = 'none';
-            }
-            buildPlaceholder.classList.add('js-hidden');
-            buildPlaceholder.style.display = 'none';
-            if (buildModal) {
-                buildModal.classList.add('js-hidden');
-                buildModal.style.display = 'none';
-            }
-            buildVisible = false;
+            buildVisible = true;
         }
 
         // Wire option clicks (Energia/Comida/Água)
@@ -291,17 +394,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             builtEl.style.position = 'absolute';
 
-            // determine placement index (how many constructions already exist)
-            const existing = casaParent.querySelectorAll('.constructed-building');
-            const index = existing.length; // 0-based
-            // Use anchor width for spacing: if previous building has different width, account for it
-            let baseWidth = casaRect.width;
-            if (existing.length > 0) {
-                const last = existing[existing.length - 1];
-                const lastRect = last.getBoundingClientRect();
-                baseWidth = lastRect.width;
-            }
-            const left = (casaRect.left - parentRect.left) + casaRect.width + gap + index * (baseWidth + gap);
+            // Determine placement anchored to the baseline rightmost element so
+            // stacked elevators above/below won't affect horizontal sequencing.
+            const baselineRightmost = getBaselineRightmost(casaParent, casaRect);
+            let anchorRect = casaRect;
+            if (baselineRightmost) anchorRect = baselineRightmost.getBoundingClientRect();
+            const left = (anchorRect.left - parentRect.left) + anchorRect.width + gap;
             const top = casaRect.top - parentRect.top;
             builtEl.style.left = left + 'px';
             builtEl.style.top = top + 'px';
@@ -325,37 +423,48 @@ document.addEventListener('DOMContentLoaded', function () {
             // Recompute the main placeholder position (to the right of the new rightmost building)
             updateBuildPlaceholderPosition();
 
-            // Determine if rightmost is an elevator; if so show up/down placeholders
-            const allExisting = Array.from(casaParent.querySelectorAll('.constructed-building'));
-            if (allExisting.length > 0) {
-                const rightmost = allExisting.reduce((acc, el) => {
+            // Determine if there is any elevator on the casa baseline. If so,
+            // show elevator up/down placeholders (anchored to the rightmost
+            // elevator on that baseline) while still keeping the main
+            // horizontal placeholder visible so the player can continue building
+            // to the right.
+            const baselineRow = Array.from(casaParent.querySelectorAll('.constructed-building')).filter(el => {
+                const r = el.getBoundingClientRect();
+                return Math.abs(r.top - casaRect.top) < 4;
+            });
+            // find rightmost elevator on the baseline (if any)
+            const baselineElevators = baselineRow.filter(el => el.classList.contains('building-elevador'));
+            if (baselineElevators.length > 0 && buildPlaceholderUp && buildPlaceholderDown) {
+                const rightmostElevator = baselineElevators.reduce((acc, el) => {
                     const r = el.getBoundingClientRect();
                     const right = r.left + r.width;
-                    const accRight = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
-                    return right > accRight ? el : acc;
-                }, allExisting[0]);
-                if (rightmost.classList.contains('building-elevador') && buildPlaceholderUp && buildPlaceholderDown) {
-                    updateElevatorPlaceholders(rightmost);
-                    buildPlaceholderUp.classList.remove('js-hidden');
-                    buildPlaceholderUp.style.display = 'flex';
-                    buildPlaceholderDown.classList.remove('js-hidden');
-                    buildPlaceholderDown.style.display = 'flex';
-                } else {
-                    if (buildPlaceholderUp) {
-                        buildPlaceholderUp.classList.add('js-hidden');
-                        buildPlaceholderUp.style.display = 'none';
-                    }
-                    if (buildPlaceholderDown) {
-                        buildPlaceholderDown.classList.add('js-hidden');
-                        buildPlaceholderDown.style.display = 'none';
-                    }
-                    // ensure main placeholder visible
-                    buildPlaceholder.classList.remove('js-hidden');
-                    buildPlaceholder.style.display = 'flex';
+                    const accR = acc.getBoundingClientRect().left + acc.getBoundingClientRect().width;
+                    return right > accR ? el : acc;
+                }, baselineElevators[0]);
+                updateElevatorPlaceholders(rightmostElevator);
+                buildPlaceholderUp.classList.remove('js-hidden');
+                buildPlaceholderUp.style.display = 'flex';
+                buildPlaceholderDown.classList.remove('js-hidden');
+                buildPlaceholderDown.style.display = 'flex';
+                // ensure main placeholder is still visible for horizontal building
+                buildPlaceholder.classList.remove('js-hidden');
+                buildPlaceholder.style.display = 'flex';
+            } else {
+                if (buildPlaceholderUp) {
+                    buildPlaceholderUp.classList.add('js-hidden');
+                    buildPlaceholderUp.style.display = 'none';
                 }
+                if (buildPlaceholderDown) {
+                    buildPlaceholderDown.classList.add('js-hidden');
+                    buildPlaceholderDown.style.display = 'none';
+                }
+                // ensure main placeholder visible
+                buildPlaceholder.classList.remove('js-hidden');
+                buildPlaceholder.style.display = 'flex';
             }
             // keep buildVisible true so the user can continue placing constructions
             buildVisible = true;
+            setBuildIndicator(true);
         }
 
         // Wire option clicks for inline buildMenu (if still used)
