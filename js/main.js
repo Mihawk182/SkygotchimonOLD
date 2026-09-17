@@ -103,11 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
         [ui.temperatureSlider, ui.humiditySlider, ui.lightSlider].forEach(slider => {
             slider.addEventListener('input', () => {
                 updateEggVisuals();
-                if (checkIncubationConditions()) {
-                    ui.eggFeedback.textContent = "Condições ideais!";
-                } else {
-                    ui.eggFeedback.textContent = "Ajuste os parâmetros para continuar a incubação.";
-                }
+                updateIncubationGuidance();
             });
         });
 
@@ -222,8 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.progressBarIncubator.firstElementChild.style.width = '0%';
         updateEggVisuals();
 
-        // Define o feedback inicial para guiar o jogador
-        ui.eggFeedback.textContent = "Ajuste os parâmetros para encontrar as condições ideais.";
+        // Mostra o que o jogador precisa ajustar desde o início.
+        updateIncubationGuidance();
 
         gameState.incubation.interval = setInterval(() => {
             if (checkIncubationConditions()) {
@@ -289,6 +285,32 @@ document.addEventListener('DOMContentLoaded', () => {
             
             populateCreatureProfile();
         }
+    }
+
+    function updateIncubationGuidance() {
+        const element = gameState.incubation.selectedEggElement;
+        const conditions = idealConditions[element];
+
+        if (!conditions) {
+            ui.eggFeedback.textContent = 'Escolha um ovo para começar a incubação.';
+            return;
+        }
+
+        const temperature = Number(ui.temperatureSlider.value);
+        const humidity = Number(ui.humiditySlider.value);
+        const light = Number(ui.lightSlider.value);
+        const messages = [];
+
+        if (temperature < conditions.temp.min) messages.push('🥶 Está muito frio — aumente a temperatura.');
+        if (temperature > conditions.temp.max) messages.push('🥵 Está muito quente — diminua a temperatura.');
+        if (humidity < conditions.humidity.min) messages.push('🏜️ Está muito seco — aumente a umidade.');
+        if (humidity > conditions.humidity.max) messages.push('💦 Está muito úmido — diminua a umidade.');
+        if (light < conditions.light.min) messages.push('🌑 Está muito escuro — aumente a luminosidade.');
+        if (light > conditions.light.max) messages.push('☀️ Está muito claro — diminua a luminosidade.');
+
+        ui.eggFeedback.textContent = messages.length
+            ? messages.join('\n')
+            : '✅ Tudo certo! As condições estão ideais para o ovo chocar.';
     }
 
     function checkIncubationConditions() {
