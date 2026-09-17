@@ -276,5 +276,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/ui.js" type="module"></script>
     <script src="js/main.js" type="module"></script>
+    <script>
+        // Navegação inicial independente do módulo do jogo.
+        document.getElementById('new-game-btn').addEventListener('click', () => {
+            document.querySelectorAll('.screen').forEach((screen) => {
+                const isEggSelection = screen.id === 'tela-ovo';
+                screen.classList.toggle('active', isEggSelection);
+                screen.classList.toggle('hidden', !isEggSelection);
+            });
+        });
+    </script>
 </body>
 </html>
