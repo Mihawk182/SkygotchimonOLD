@@ -225,9 +225,6 @@ const initializeSkygotchimon = () => {
             if (checkIncubationConditions()) {
                 gameState.incubation.progress += INCUBATION_PROGRESS_STEP;
                 ui.progressBarIncubator.firstElementChild.style.width = `${gameState.incubation.progress}%`;
-                ui.eggFeedback.textContent = "Condições ideais! O ovo está aquecendo...";
-            } else {
-                ui.eggFeedback.textContent = "Ajuste os parâmetros para continuar a incubação.";
             }
             if (gameState.incubation.progress >= 100) {
                 hatchEgg();
@@ -301,16 +298,16 @@ const initializeSkygotchimon = () => {
         const light = Number(ui.lightSlider.value);
         const messages = [];
 
-        if (temperature < conditions.temp.min) messages.push('🥶 Está muito frio — aumente a temperatura.');
-        if (temperature > conditions.temp.max) messages.push('🥵 Está muito quente — diminua a temperatura.');
-        if (humidity < conditions.humidity.min) messages.push('🏜️ Está muito seco — aumente a umidade.');
-        if (humidity > conditions.humidity.max) messages.push('💦 Está muito úmido — diminua a umidade.');
-        if (light < conditions.light.min) messages.push('🌑 Está muito escuro — aumente a luminosidade.');
-        if (light > conditions.light.max) messages.push('☀️ Está muito claro — diminua a luminosidade.');
+        if (temperature < conditions.temp.min) messages.push('🥶 Frio demais');
+        if (temperature > conditions.temp.max) messages.push('🥵 Quente demais');
+        if (humidity < conditions.humidity.min) messages.push('🏜️ Seco demais');
+        if (humidity > conditions.humidity.max) messages.push('💦 Úmido demais');
+        if (light < conditions.light.min) messages.push('🌑 Pouca luz');
+        if (light > conditions.light.max) messages.push('☀️ Luz demais');
 
         ui.eggFeedback.textContent = messages.length
             ? messages.join('\n')
-            : '✅ Tudo certo! As condições estão ideais para o ovo chocar.';
+            : '✅ Condições ideais';
     }
 
     function checkIncubationConditions() {
