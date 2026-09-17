@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function init() {
         // Conecta todos os botões às suas funções
-        ui.newGameBtn.addEventListener('click', () => showScreen('tela-castelo'));
+        ui.newGameBtn.addEventListener('click', () => showScreen('tela-ovo'));
         ui.loadGameBtn.addEventListener('click', () => console.log('Carregar Jogo clicado'));
         ui.optionsBtn.addEventListener('click', () => console.log('Opções clicado'));
         ui.exitBtn.addEventListener('click', () => console.log('Sair clicado'));
