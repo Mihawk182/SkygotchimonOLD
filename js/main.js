@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function init() {
         // Conecta todos os botões às suas funções
-        ui.newGameBtn.addEventListener('click', () => showScreen('tela-ovo'));
+        // Um jogo novo sempre começa pela escolha do ovo.\n        ui.newGameBtn.addEventListener('click', startNewGame);
         ui.loadGameBtn.addEventListener('click', () => console.log('Carregar Jogo clicado'));
         ui.optionsBtn.addEventListener('click', () => console.log('Opções clicado'));
         ui.exitBtn.addEventListener('click', () => console.log('Sair clicado'));
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen('tela-menu');
     }
 
-    // --- Lógica de Telas e UI ---
+    // --- Lógica de Telas e UI ---\n\n    function startNewGame() {\n        // Garante que nenhuma tela antiga (como a casa) permaneça visível.\n        showScreen('tela-ovo');\n    }
 
     /**
      * Lida com o clique no botão "Voltar" do pop-up de informações do ovo.
