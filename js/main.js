@@ -7,7 +7,7 @@
 
 import { ui, showScreen, deselectEggs } from './ui.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+const initializeSkygotchimon = () => {
     // --- Constantes de Jogo (para balanceamento) ---
     const GAME_LOOP_INTERVAL_MS = 5000;
     const INCUBATION_INTERVAL_MS = 1200;
@@ -563,4 +563,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     init();
-});
+};
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSkygotchimon, { once: true });
+} else {
+    initializeSkygotchimon();
+}
