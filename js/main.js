@@ -144,7 +144,12 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen('tela-menu');
     }
 
-    // --- Lógica de Telas e UI ---\n\n    function startNewGame() {\n        // Garante que nenhuma tela antiga (como a casa) permaneça visível.\n        showScreen('tela-ovo');\n    }
+    // --- Lógica de Telas e UI ---
+
+    function startNewGame() {
+        // Garante que nenhuma tela antiga (como a casa) permaneça visível.
+        showScreen('tela-ovo');
+    }
 
     /**
      * Lida com o clique no botão "Voltar" do pop-up de informações do ovo.
