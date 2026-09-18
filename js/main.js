@@ -202,6 +202,33 @@ const initializeSkygotchimon = () => {
         ui.healthBar.style.width = `${saude}%`;
         ui.strengthBar.style.width = `${forca}%`;
         ui.intelligenceBar.style.width = `${inteligencia}%`;
+
+        const criticalBars = [
+            [ui.hungerBarContainer, fome < STAT_THRESHOLD],
+            [ui.happinessBarContainer, felicidade < STAT_THRESHOLD],
+            [ui.cleanlinessBarContainer, sujeira > STAT_THRESHOLD],
+            [ui.healthBarContainer, saude < STAT_THRESHOLD],
+        ];
+        criticalBars.forEach(([container, isCritical]) => container?.classList.toggle('is-critical', isCritical));
+        updateCreatureStatus();
+    }
+
+    function updateCreatureStatus() {
+        if (!ui.creatureStatus) return;
+
+        const { fome, felicidade, sujeira, saude } = gameState.creature.stats;
+        let status = '😊 Está bem';
+
+        if (gameState.game.isPaused) status = '💤 Dormindo';
+        else if (gameState.game.isInteracting && gameState.creature.currentAnimation === 'comendo') status = '🍽️ Comendo';
+        else if (gameState.game.isInteracting) status = '✨ Interagindo';
+        else if (saude < STAT_THRESHOLD) status = '🤒 Precisa de cuidados';
+        else if (sujeira > STAT_THRESHOLD) status = '🧼 Precisa de limpeza';
+        else if (fome < STAT_THRESHOLD) status = '🍖 Está com fome';
+        else if (felicidade < STAT_THRESHOLD) status = '🎈 Quer brincar';
+        else if (felicidade > 80) status = '😊 Está feliz';
+
+        ui.creatureStatus.textContent = status;
     }
 
     // --- Lógica de Incubação e Evolução ---
