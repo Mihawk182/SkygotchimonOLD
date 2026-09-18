@@ -436,3 +436,79 @@ body {
     .care-screen { max-width: 42rem; margin: 0 auto; }
     .creature-display { min-height: 17rem; }
 }
+
+
+/* Versão compacta da tela de cuidados */
+.care-screen {
+    height: 100vh;
+    min-height: 0;
+    justify-content: flex-start;
+    gap: 0.55rem;
+    padding: 0.7rem;
+}
+.care-status-panel {
+    padding: 0.75rem;
+}
+.care-status-panel h2 {
+    font-size: 2rem;
+    line-height: 1.1;
+}
+.creature-status {
+    margin: 0.1rem 0 0.45rem;
+    font-size: 1rem;
+}
+.growth-status { margin-bottom: 0.6rem; }
+.care-status-panel .bar-label {
+    margin-bottom: 0.15rem;
+    font-size: 0.85rem;
+}
+.care-status-panel .bar-background,
+.care-status-panel .bar-background.h-5 {
+    height: 0.75rem !important;
+}
+.care-status-panel #status-bars-container {
+    gap: 0.55rem 1.1rem;
+}
+.creature-display {
+    flex: 1 1 auto;
+    min-height: 6rem;
+    height: auto;
+}
+.creature-display img {
+    width: min(38vw, 10rem);
+    max-height: 10rem;
+}
+.action-buttons-grid {
+    max-width: none;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-top: auto;
+}
+.action-buttons-grid .action-btn {
+    min-height: 0;
+    height: 5.15rem;
+    padding: 0.25rem 0.1rem;
+    gap: 0.1rem;
+    font-size: 0.7rem;
+    border-radius: 0.65rem;
+}
+.action-buttons-grid .action-btn img {
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+    max-width: 100%;
+    object-fit: contain;
+}
+.action-buttons-grid .action-btn > span:first-child:not(:last-child) {
+    font-size: 1.65rem;
+}
+.debug-toggle {
+    width: 2rem;
+    height: 2rem;
+    right: 0.5rem;
+    bottom: 0.5rem;
+    font-size: 0.65rem;
+}
+@media (min-width: 640px) {
+    .care-screen { max-width: 42rem; }
+    .action-buttons-grid { max-width: 28rem; }
+}
