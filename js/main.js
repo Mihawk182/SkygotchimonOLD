@@ -98,6 +98,7 @@ const initializeSkygotchimon = () => {
         ui.sleepBtn.addEventListener('click', handleSleep);
         ui.studyBtn.addEventListener('click', handleStudy);
         ui.trainBtn.addEventListener('click', handleTrain);
+        ui.evolveBtn.addEventListener('click', handleEvolution);
         
         // Sliders da incubadora
         [ui.temperatureSlider, ui.humiditySlider, ui.lightSlider].forEach(slider => {
@@ -194,8 +195,12 @@ const initializeSkygotchimon = () => {
     function updateCreatureUI() {
         const { fome, felicidade, sujeira, saude, forca, inteligencia } = gameState.creature.stats;
         const growthPercent = Math.min((gameState.creature.progression.experience / EVOLUTION_TIME_MS) * 100, 100);
+        const currentStageIndex = Object.keys(STAGE_FOLDER_MAP).indexOf(gameState.creature.stage);
+        const canEvolve = growthPercent >= 100 && currentStageIndex < Object.keys(STAGE_FOLDER_MAP).length - 1;
 
         ui.growthBar.style.width = `${growthPercent}%`;
+        ui.growthBarContainer.classList.toggle('hidden', canEvolve);
+        ui.evolveBtn.classList.toggle('hidden', !canEvolve);
         ui.hungerBar.style.width = `${fome}%`;
         ui.happinessBar.style.width = `${felicidade}%`;
         ui.cleanlinessBar.style.width = `${100 - sujeira}%`;
@@ -285,9 +290,15 @@ const initializeSkygotchimon = () => {
     }
 
     function checkEvolution() {
+        // O crescimento chega a 100%, mas a evolução depende do toque do jogador.
         if (gameState.creature.progression.experience >= EVOLUTION_TIME_MS) {
-            evolveCreature();
+            gameState.creature.progression.experience = EVOLUTION_TIME_MS;
         }
+    }
+
+    function handleEvolution() {
+        if (gameState.creature.progression.experience < EVOLUTION_TIME_MS) return;
+        evolveCreature();
     }
 
     function evolveCreature() {
