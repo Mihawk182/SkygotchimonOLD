@@ -581,6 +581,7 @@ const ui = {
     // Elementos da Tela de Cuidados
     creatureDisplay: document.getElementById('creature-display'),
     creatureName: document.getElementById('creature-name'),
+    creatureStatus: document.getElementById('creature-status'),
     creatureImage: document.getElementById('creature-image'),
     
     // Barras de Status
