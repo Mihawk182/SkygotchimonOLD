@@ -66,6 +66,120 @@ const initializeSkygotchimon = () => {
         }
     };
     
+    const SAVE_KEY = 'skygotchimon.save.v1';
+    const SAVE_VERSION = 1;
+
+    function hasSavedGame() {
+        return Boolean(localStorage.getItem(SAVE_KEY));
+    }
+
+    function updateLoadGameButton() {
+        const available = hasSavedGame();
+        ui.loadGameBtn.disabled = !available;
+        ui.loadGameBtn.classList.toggle('opacity-50', !available);
+        ui.loadGameBtn.classList.toggle('cursor-not-allowed', !available);
+    }
+
+    function saveGame() {
+        if (!gameState.creature.element && !gameState.incubation.selectedEggElement) return;
+
+        const snapshot = {
+            version: SAVE_VERSION,
+            savedAt: new Date().toISOString(),
+            incubation: {
+                selectedEggElement: gameState.incubation.selectedEggElement,
+                progress: gameState.incubation.progress,
+                isIncubating: gameState.incubation.isIncubating,
+                controls: {
+                    temperature: Number(ui.temperatureSlider.value),
+                    humidity: Number(ui.humiditySlider.value),
+                    light: Number(ui.lightSlider.value),
+                },
+            },
+            creature: {
+                name: gameState.creature.name,
+                creatureName: gameState.creature.creatureName,
+                element: gameState.creature.element,
+                stage: gameState.creature.stage,
+                currentAnimation: gameState.creature.currentAnimation,
+                stats: gameState.creature.stats,
+                progression: gameState.creature.progression,
+            },
+        };
+
+        localStorage.setItem(SAVE_KEY, JSON.stringify(snapshot));
+        updateLoadGameButton();
+    }
+
+    function restoreSavedGame() {
+        try {
+            const saved = JSON.parse(localStorage.getItem(SAVE_KEY));
+            if (!saved || saved.version !== SAVE_VERSION) return false;
+
+            const savedCreature = saved.creature || {};
+            const savedIncubation = saved.incubation || {};
+            Object.assign(gameState.creature, savedCreature, {
+                stats: { ...gameState.creature.stats, ...(savedCreature.stats || {}) },
+                progression: { ...gameState.creature.progression, ...(savedCreature.progression || {}) },
+                isStudying: false,
+                isTraining: false,
+            });
+            Object.assign(gameState.incubation, savedIncubation, {
+                interval: null,
+                isIncubating: false,
+            });
+
+            const controls = savedIncubation.controls || {};
+            ui.temperatureSlider.value = controls.temperature ?? 50;
+            ui.humiditySlider.value = controls.humidity ?? 50;
+            ui.lightSlider.value = controls.light ?? 50;
+            return Boolean(gameState.creature.element || gameState.incubation.selectedEggElement);
+        } catch (error) {
+            console.warn('Não foi possível recuperar o progresso salvo.', error);
+            localStorage.removeItem(SAVE_KEY);
+            return false;
+        }
+    }
+
+    function continueSavedGame() {
+        if (!restoreSavedGame()) {
+            updateLoadGameButton();
+            return;
+        }
+
+        if (gameState.creature.element) {
+            populateCreatureProfile();
+            showScreen('tela-cuidados');
+            startGameLoop();
+            return;
+        }
+
+        startIncubation(true);
+    }
+
+    function resetGameState() {
+        clearInterval(gameState.game.loopInterval);
+        clearInterval(gameState.incubation.interval);
+        gameState.game.loopInterval = null;
+        gameState.game.isPaused = false;
+        gameState.game.isInteracting = false;
+        gameState.incubation.selectedEggElement = null;
+        gameState.incubation.progress = 0;
+        gameState.incubation.interval = null;
+        gameState.incubation.isIncubating = false;
+        gameState.creature.name = null;
+        gameState.creature.creatureName = null;
+        gameState.creature.element = null;
+        gameState.creature.stage = 'bebe';
+        gameState.creature.currentAnimation = 'normal';
+        gameState.creature.isStudying = false;
+        gameState.creature.isTraining = false;
+        gameState.creature.stats = { fome: 100, felicidade: 100, sujeira: 0, saude: 100, forca: 0, inteligencia: 0 };
+        gameState.creature.progression = { experience: 0 };
+        localStorage.removeItem(SAVE_KEY);
+        updateLoadGameButton();
+    }
+
     const idealConditions = {
         fire: { temp: { min: 70, max: 100 }, humidity: { min: 0, max: 30 }, light: { min: 70, max: 100 } },
         water: { temp: { min: 0, max: 30 }, humidity: { min: 70, max: 100 }, light: { min: 0, max: 30 } },
@@ -83,12 +197,11 @@ const initializeSkygotchimon = () => {
 
     function init() {
         // Conecta todos os botões às suas funções
-        // Um jogo novo sempre começa pela escolha do ovo.\n        ui.newGameBtn.addEventListener('click', startNewGame);
-        ui.loadGameBtn.addEventListener('click', () => console.log('Carregar Jogo clicado'));
+        // Um jogo novo sempre começa pela escolha do ovo.
+        ui.newGameBtn.addEventListener('click', startNewGame);
+        ui.loadGameBtn.addEventListener('click', continueSavedGame);
         ui.optionsBtn.addEventListener('click', () => console.log('Opções clicado'));
         ui.exitBtn.addEventListener('click', () => console.log('Sair clicado'));
-
-        ui.casaDiv.addEventListener('click', () => showScreen('tela-ovo')); // Added
 
         ui.popupContinueBtn.addEventListener('click', handlePopupContinue);
         ui.popupBackBtn.addEventListener('click', handlePopupBack);
@@ -105,6 +218,7 @@ const initializeSkygotchimon = () => {
             slider.addEventListener('input', () => {
                 updateEggVisuals();
                 updateIncubationGuidance();
+                saveGame();
             });
         });
 
@@ -138,13 +252,15 @@ const initializeSkygotchimon = () => {
         });
 
         setupDebugControls();
+        updateLoadGameButton();
         showScreen('tela-menu');
     }
 
     // --- Lógica de Telas e UI ---
 
     function startNewGame() {
-        // Garante que nenhuma tela antiga (como a casa) permaneça visível.
+        if (hasSavedGame() && !window.confirm('Começar um novo jogo apagará o progresso atual. Deseja continuar?')) return;
+        resetGameState();
         showScreen('tela-ovo');
     }
 
@@ -216,6 +332,7 @@ const initializeSkygotchimon = () => {
         ];
         criticalBars.forEach(([container, isCritical]) => container?.classList.toggle('is-critical', isCritical));
         updateCreatureStatus();
+        saveGame();
     }
 
     function updateCreatureStatus() {
@@ -238,20 +355,21 @@ const initializeSkygotchimon = () => {
 
     // --- Lógica de Incubação e Evolução ---
 
-    function startIncubation() {
+    function startIncubation(resume = false) {
         if (gameState.incubation.isIncubating) return;
         const eggVideoPath = `assets/videos/eggs/${gameState.incubation.selectedEggElement}_egg.mp4`;
         ui.eggImageIncubator.src = eggVideoPath;
         gameState.incubation.isIncubating = true;
         showScreen('tela-incubadora');
 
-        // Zera o progresso e atualiza os visuais iniciais
-        gameState.incubation.progress = 0;
-        ui.progressBarIncubator.firstElementChild.style.width = '0%';
+        // Em um jogo novo, começa do zero; ao continuar, mantém o progresso salvo.
+        if (!resume) gameState.incubation.progress = 0;
+        ui.progressBarIncubator.firstElementChild.style.width = `${gameState.incubation.progress}%`;
         updateEggVisuals();
 
         // Mostra o que o jogador precisa ajustar desde o início.
         updateIncubationGuidance();
+        saveGame();
 
         gameState.incubation.interval = setInterval(() => {
             if (checkIncubationConditions()) {
@@ -260,6 +378,8 @@ const initializeSkygotchimon = () => {
             }
             if (gameState.incubation.progress >= 100) {
                 hatchEgg();
+            } else {
+                saveGame();
             }
         }, INCUBATION_INTERVAL_MS);
     }
@@ -280,6 +400,7 @@ const initializeSkygotchimon = () => {
         creature.stats = { fome: 80, felicidade: 100, sujeira: 0, saude: 100, forca: 0, inteligencia: 0 };
         creature.progression.experience = 0;
 
+        saveGame();
         console.log("Criatura nascida:", gameState.creature);
 
         setTimeout(() => {
