@@ -585,7 +585,9 @@ const ui = {
     creatureImage: document.getElementById('creature-image'),
     
     // Barras de Status
+    growthBarContainer: document.getElementById('growth-bar-container'),
     growthBar: document.getElementById('growth-bar'),
+    evolveBtn: document.getElementById('evolve-btn'),
     hungerBar: document.getElementById('hunger-bar'),
     happinessBar: document.getElementById('happiness-bar'),
     cleanlinessBar: document.getElementById('cleanliness-bar'),
